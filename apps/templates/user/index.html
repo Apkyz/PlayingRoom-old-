@@ -1,0 +1,60 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">User</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'user_index' %}"><i class="feather icon-user"></i> User</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- [ breadcrumb ] end -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                    <div class="row">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>User</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p>{{user.username}}</p>
+                                    <p>{{user.first_name}}</p>
+                                    <p>{{user.last_name}}</p>
+                                    <p>{{user.email}}</p>
+                                    <p>{{user.password}}</p>
+                                    <p>{{user.groups}}</p>
+                                    <p>{{user.user_permissions}}</p>
+                                    <p>{{user.is_staff}}</p>
+                                    <p>{{user.is_active}}</p>
+                                    <p>{{user.is_superuser}}</p>
+                                    <p>{{user.last_login}}</p>
+                                    <p>{{user.date_joined}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ Main Content ] end -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

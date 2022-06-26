@@ -1,0 +1,86 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Player</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'user_index' %}"><i class="feather icon-users"></i> Players</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- [ breadcrumb ] end -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Player</h5>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-hover" id="table_id">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Nom</th>
+                                                <th>Prenom</th>
+                                                <th>Cosy</th>
+                                                <th>Decks</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for i in players %}
+                                            <tr>
+                                                <td style="width: 8%">
+                                                    <a class="text-dark" href=""><i class="fa fa-fw fa-solid fa-arrow-up-right-from-square px-2"></i></a>
+                                                    <a class="text-dark" href=""><i class="fa fa-fw fa-solid fa-pen-to-square px-2"></i></a>
+                                                    <a class="text-dark" href=""><i class="fa fa-fw fa-solid fa-trash px-2"></i></a>
+                                                </td>
+                                                <td style="width: 25%">{{i.last_name}}</td>
+                                                <td style="width: 25%">{{i.first_name}}</td>
+                                                <td style="width: 20%">{{i.cosy}}</td>
+                                                <td style="width: 22%">
+                                                {% for j in i.decks.all %}
+                                                    <span>{{j.name}}</span>
+                                                {% endfor %}
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ Main Content ] end -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+    $(document).ready( function () {
+    $('#table_id{{forloop.counter}}').DataTable({
+        "order": [[1, 'asc']]
+    });
+} );
+</script>
+{% endblock javascripts %}

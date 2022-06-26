@@ -1,0 +1,52 @@
+
+    <nav class="pcoded-navbar navbar-dark brand-red">
+        <div class="navbar-wrapper">
+            <div class="navbar-brand header-logo">
+                <a href="" class="b-brand">
+                    <div class="b-bg">
+                        <i class="feather icon-aperture"></i>
+                    </div>
+                    <span class="b-title">ASBL Playing Room</span>
+                </a>
+                <a class="mobile-menu" id="mobile-collapse" href="javascript:"><span></span></a>
+            </div>
+            <div class="navbar-content scroll-div">
+                <ul class="nav pcoded-inner-navbar">
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Navigation</label>
+                    </li>
+                    <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project" 
+                        class="nav-item {% if 'home' in segment %} active {% endif %}">
+                        <a href="/" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a>
+                    </li>
+
+                    <!-- PLAYER -->
+                    <li data-username="player"
+                        class="nav-item pcoded-hasmenu {% if 'ygo' in segment %} active pcoded-trigger {% endif %}">
+                        <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Player</span><span class="pcoded-badge label label-danger">NEW</span></a>
+                        <ul class="pcoded-submenu">
+                            <li class="nav-item {% if 'player_index' in segment %} active {% endif %}">
+                                <a href="{% url 'player_index' %}" class="nav-link ">
+                                    <i class="feather icon-home"></i><span class="pcoded-mtext"> Index</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {% if 'ygo_deck' in segment %} active {% endif %}">
+                                <a href="" class="nav-link ">
+                                    <i class="feather icon-package"></i><span class="pcoded-mtext"> Decks</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="li-fixed-bottom">
+                <ul class="nav pcoded-inner-navbar">
+                    <li data-username="Disabled Menu" class="nav-item">
+                        <a href="{% url 'logout' %}" class="nav-link li-fixed-bottom">
+                            <span class="pcoded-micon"><i class="feather icon-power"></i></span><span class="pcoded-mtext">Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
