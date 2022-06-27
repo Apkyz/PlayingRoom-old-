@@ -1,6 +1,6 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} Dashboard {% endblock %} 
+{% block title %} Player {% endblock %} 
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -29,7 +29,7 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Player</h5>
+                                    <h5>Player </h5><span class="float-right"><a href="{% url 'player_add'%}" class="btn btn-success">Add</a></span>
                                 </div>
                                 <div class="card-body">
                                     <table class="table table-hover" id="table_id">
@@ -46,9 +46,9 @@
                                             {% for i in players %}
                                             <tr>
                                                 <td style="width: 8%">
-                                                    <a class="text-dark" href=""><i class="fa fa-fw fa-solid fa-arrow-up-right-from-square px-2"></i></a>
-                                                    <a class="text-dark" href=""><i class="fa fa-fw fa-solid fa-pen-to-square px-2"></i></a>
-                                                    <a class="text-dark" href=""><i class="fa fa-fw fa-solid fa-trash px-2"></i></a>
+                                                    <a class="text-dark" href="{% url 'player_view' i.cosy %}"><i class="fa fa-fw fa-solid fa-arrow-up-right-from-square px-2"></i></a>
+                                                    <a class="text-dark" href="{% url 'player_edit' i.cosy %}"><i class="fa fa-fw fa-solid fa-pen-to-square px-2"></i></a>
+                                                    <a class="text-dark" href="{% url 'player_delete' i.cosy %}"><i class="fa fa-fw fa-solid fa-trash px-2"></i></a>
                                                 </td>
                                                 <td style="width: 25%">{{i.last_name}}</td>
                                                 <td style="width: 25%">{{i.first_name}}</td>

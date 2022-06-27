@@ -1,12 +1,13 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django import template
 from django.contrib.auth.decorators import permission_required, login_required
 from django.template import loader
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 
 from .models import Deck, Player, Championship
-
+from .forms import PlayerForm
+from django.forms import ModelForm
 # Create your views here.
 
 @login_required(login_url="/login/")
@@ -20,37 +21,51 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 def add(request):
-    template = loader.get_template('player/index.html')
-    context = { 
-        'segment': 'player_index',
-    }
-    # deck1 = Deck(name = 'Sky Striker')
-    # deck2 = Deck(name = 'Dragon Link')
-    # deck1.save()
-    # deck2.save()
+    template = loader.get_template('player/form.html')
+    context = {}
+    form = PlayerForm()
+    context['form'] = form
+    if request.method == 'POST':
+        form = PlayerForm(request.POST)
+        player = Player()
+        player.first_name = request.POST.get("first_name")
+        player.last_name = request.POST.get("last_name")
+        player.cosy = request.POST.get("cosy")
+        player.save()
+        return redirect(index)
+    return HttpResponse(template.render(context, request))
+
+def delete(request, cosy):
+    player = get_object_or_404(Player, cosy = cosy)
+    if player:
+        player.delete()
+        return redirect(index)
     
-    # player1 = Player(first_name = 'Nicola', last_name = 'La Mattina', cosy = '03123456789')
-    # player2 = Player(first_name = 'Alexandre', last_name = 'Appez', cosy = '0123456789')
-    # player1.save()
-    # player2.save()
+def view(request, cosy):
+    player = get_object_or_404(Player, cosy = cosy)
+    if player:
+        template = loader.get_template('player/home.html')
+        context = {}
+        context['player'] = player
+        return HttpResponse(template.render(context, request))
     
-    # player1.decks.add(deck1)
-    # player2.decks.add(deck2)
-    
-    Deck.objects.filter(name='Sky Striker').update(name='Evil Twin')
-    # players = list()
-    # player1 = Player(first_name = 'Nicola', last_name = 'La Mattina', cosy = '03123456789')
-    # player2 = Player(first_name = 'Alexandre', last_name = 'Appez', cosy = '0123456789')
-    # player1.save()
-    # player2.save()
-    # players.append(Player(first_name = 'Charles', last_name = 'Thomas', cosy = '012365498981'))
-    # players.append(Player(first_name = 'Quentin', last_name = 'Sente', cosy = '036519841'))
-    # players.append(Player(first_name = 'Maxime', last_name = 'Martin', cosy = '9984980816'))
-    # players.append(Player(first_name = 'Loris', last_name = 'Hubin', cosy = '65190840'))
-    # players.append(Player(first_name = 'Dimitri', last_name = 'Popadinec', cosy = '984098749510'))
-    # players.append(Player(first_name = 'Corentin', last_name = 'Letelier', cosy = '649840984'))
-    # for i in players:
-    #     i.save()
-    
-    return redirect(index)
-    
+def edit(request, cosy):
+    if request.method == 'POST':
+        old_cosy = request.POST.get("old_cosy")
+        p = Player(
+            first_name = request.POST.get("first_name"),
+            last_name = request.POST.get("last_name"),
+            cosy = request.POST.get("cosy")
+        )
+        player = Player.objects.filter(cosy=old_cosy).update(first_name = p.first_name, last_name = p.last_name, cosy = p.cosy)
+        return redirect(index)
+    else:
+        player = get_object_or_404(Player, cosy = cosy)
+        if player:
+            form = PlayerForm(player=player)
+            template = loader.get_template('player/form.html')
+            context = {}
+            context['player'] = player
+            context['form'] = form
+            context['edit'] = True
+            return HttpResponse(template.render(context, request))
