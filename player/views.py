@@ -26,7 +26,6 @@ def add(request):
     form = PlayerForm()
     context['form'] = form
     if request.method == 'POST':
-        form = PlayerForm(request.POST)
         player = Player()
         player.first_name = request.POST.get("first_name")
         player.last_name = request.POST.get("last_name")
