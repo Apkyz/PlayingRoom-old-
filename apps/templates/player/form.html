@@ -17,7 +17,7 @@
                     </div>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="{% url 'user_index' %}"><i class="feather icon-users"></i> Players</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'player_index' %}"><i class="feather icon-users"> Players</i></a></li>
                     </ul>
                 </div>
             </div>
@@ -26,31 +26,72 @@
                 <div class="page-wrapper">
                     <!-- [ Main Content ] start -->
                     <div class="row">
+                        {% if edit%}
+                        <div class="col-8">
+                        {% else %}
                         <div class="col-12">
+                        {% endif %}
                             <div class="card">
-                                <div class="card-header">
-                                    <h5>Formulaire</h5>
-                                </div>
+                                <div class="card-header"><h5>Edit {{player}}</h5></div>
                                 <div class="card-body">
-                                    {% if edit %}
-                                    <form method="POST" action="{% url 'player_edit' player.cosy %}">
-                                        <input hidden name="old_cosy" value="{{player.cosy}}">
-                                    {% else %}
-                                    <form method="POST" action="{% url 'player_add' %}">
-                                    {% endif %}
-                                        {% csrf_token %}
-                                        <table class="table table-sm compact">
-                                            {{form.as_table}}
-                                        </table>
-                                        <div class="float-right">
-                                            <input class="btn btn-outline-primary" type="submit" value="Valider">
+                                    <div class="row">
+                                        <!-- EDIT -->
+                                        {% if edit %}
+                                        <div class="col-6">
+                                            <form method="POST" action="{% url 'player_edit' player.cosy %}">
+                                            <input hidden name="old_cosy" value="{{player.cosy}}">
+                                        {% else %}
+                                        <div class="col-12">
+                                            <form method="POST" action="{% url 'player_add' %}">
+                                        {% endif %}
+                                            {% csrf_token %}
+                                                <table class="table table-sm">{{form.as_table}}</table>
+                                                <input class="btn btn-success btn-lg btn-block" type="submit" value="Valider">
+                                            </form>
                                         </div>
-                                    </form>
-                                    
+                                        {% if edit %}
+                                        <div class="col-6">
+                                            {% if player.decks.all %}
+                                            <table class="table display compact">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Name</th>
+                                                </tr>
+                                                {% for deck in player.decks.all %}
+                                                <tr>
+                                                    <td style="width: 8%">
+                                                        <a class="text-dark" href="{% url 'player_deck_remove' cosy=player.cosy id=deck.pk %}"><i class="fa fa-fw fa-solid fa-trash px-2"></i></a>
+                                                    </td>
+                                                    <td>{{deck}}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </table>
+                                            {% endif %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
-                            
                         </div>
+                        {% if edit %}
+                        <div class="col-4">
+                            <div class="card">
+                                <div class="card-header"><h5>Decks</h5></div>
+                                <div class="card-body">
+                                    <form method="POST" action="{% url 'player_deck_add' player.cosy %}">
+                                        {% csrf_token %}
+                                        <input hidden name="cosy" value="{{player.cosy}}">
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control" name="name" placeholder="Nom du deck ...">
+                                            <div class="input-group-append">
+                                                <input type="submit" class="btn btn-success">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                     <!-- [ Main Content ] end -->
                 </div>

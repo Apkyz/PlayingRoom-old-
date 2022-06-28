@@ -13,11 +13,11 @@
             <div class="row align-items-center">
                 <div class="col-md-12">
                     <div class="page-header-title">
-                        <h5 class="m-b-10">Home</h5>
+                        <h5 class="m-b-10">{{player}}</h5>
                     </div>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="{% url 'user_index' %}"><i class="feather icon-users"></i> Players</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'player_index' %}"><i class="feather icon-users"></i> Players</a></li>
                     </ul>
                 </div>
             </div>
@@ -27,13 +27,46 @@
                     <!-- [ Main Content ] start -->
                     <div class="row">
                         <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Player </h5><span class="float-right"><a href="{% url 'player_add'%}" class="btn btn-success">Add</a></span>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-header"><h5>Decks</h5></div>
+                                        <div class="card-body">
+                                            <table class="table table-sm display compact">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Name</th>
+                                                </tr>
+                                                {% for deck in player.decks.all %}
+                                                <tr>
+                                                    <td>{{forloop.counter}}</td>
+                                                    <td>{{deck}}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="card-body">
-                                    {{player}}
-                                    <p>Rajouter des graphiques - stats - etc ...</p>
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-header"><h5>Winrate</h5></div>
+                                        <div class="card-body">
+                                            <table class="table table-hover">
+                                                <tr>
+                                                    <th>WIN</th>
+                                                    <td>5</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Draw</th>
+                                                    <td>5</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Loose</th>
+                                                    <td>5</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

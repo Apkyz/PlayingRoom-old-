@@ -32,7 +32,7 @@
                                     <h5>Player </h5><span class="float-right"><a href="{% url 'player_add'%}" class="btn btn-success">Add</a></span>
                                 </div>
                                 <div class="card-body">
-                                    <table class="table table-hover" id="table_id">
+                                    <table class="table table-hover display compact" id="table_id">
                                         <thead>
                                             <tr>
                                                 <th></th>
@@ -55,7 +55,9 @@
                                                 <td style="width: 20%">{{i.cosy}}</td>
                                                 <td style="width: 22%">
                                                 {% for j in i.decks.all %}
-                                                    <span>{{j.name}}</span>
+                                                    {% if forloop.counter > 1 %}
+                                                    <span>/</span>
+                                                    {% endif%}<span>{{j}}</span>
                                                 {% endfor %}
                                                 </td>
                                             </tr>

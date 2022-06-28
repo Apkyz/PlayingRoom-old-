@@ -31,14 +31,14 @@ def add(request):
         player.last_name = request.POST.get("last_name")
         player.cosy = request.POST.get("cosy")
         player.save()
-        return redirect(index)
+        return redirect(index, permanent=True)
     return HttpResponse(template.render(context, request))
 
 def delete(request, cosy):
     player = get_object_or_404(Player, cosy = cosy)
     if player:
         player.delete()
-        return redirect(index)
+        return redirect(index, permanent=True)
     
 def view(request, cosy):
     player = get_object_or_404(Player, cosy = cosy)
@@ -46,6 +46,8 @@ def view(request, cosy):
         template = loader.get_template('player/home.html')
         context = {}
         context['player'] = player
+        
+        
         return HttpResponse(template.render(context, request))
     
 def edit(request, cosy):
@@ -57,7 +59,7 @@ def edit(request, cosy):
             cosy = request.POST.get("cosy")
         )
         player = Player.objects.filter(cosy=old_cosy).update(first_name = p.first_name, last_name = p.last_name, cosy = p.cosy)
-        return redirect(index)
+        return redirect(index, permanent=True)
     else:
         player = get_object_or_404(Player, cosy = cosy)
         if player:
@@ -68,3 +70,16 @@ def edit(request, cosy):
             context['form'] = form
             context['edit'] = True
             return HttpResponse(template.render(context, request))
+        
+def deck_add(request, cosy):
+    player = get_object_or_404(Player, cosy = cosy)
+    deck = Deck(name= request.POST.get("name"))
+    deck.save()
+    player.decks.add(deck)
+    return redirect(edit, cosy, permanent=True)
+
+def deck_remove(request, cosy, id):
+    player = get_object_or_404(Player, cosy = cosy)
+    deck = get_object_or_404(Deck, id = id)
+    player.decks.remove(deck)
+    return redirect(edit, cosy, permanent=True)
