@@ -5,7 +5,7 @@ from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 
-from .models import Deck, Player, Championship
+from .models import Deck, Player, Tournament
 from .forms import PlayerForm
 from django.forms import ModelForm
 # Create your views here.
@@ -81,3 +81,7 @@ def deck_remove(request, cosy, id):
     deck = get_object_or_404(Deck, id = id)
     player.decks.remove(deck)
     return redirect(edit, cosy, permanent=True)
+
+def match_add(request):
+    
+    return redirect(index, permanent=True)

@@ -9,7 +9,12 @@ from django.http import HttpResponse
 @login_required(login_url="/login/")
 def index(request):
     template = loader.get_template('user/index.html')
-    context = { 
-        'segment': 'user_index',
-    }
+    context = {}
+    context['segment'] = 'user_index'
+    return HttpResponse(template.render(context, request))
+
+def edit(request):
+    template = loader.get_template('user/index.html')
+    context = {}
+    context['segment'] = 'user_index'
     return HttpResponse(template.render(context, request))

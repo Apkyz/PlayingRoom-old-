@@ -11,6 +11,7 @@ urlpatterns = [
     path("", include("apps.authentication.urls")), # Auth routes - login / register
     path('player/', include("player.urls")),      # Main Application
     path('user/', include("user.urls")),      # Main Application
+    path('cash/', include("cashregister.urls")),      # Main Application
 
     # ADD NEW Routes HERE
 

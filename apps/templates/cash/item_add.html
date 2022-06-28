@@ -1,0 +1,54 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Player {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Player</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'cashregister_index' %}"><i class="feather icon-shopping-cart"></i> Cash Register</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- [ breadcrumb ] end -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Add Item</h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" action="{% url 'cashregister_add_item' %}">
+                                {% csrf_token %}
+                                <table class="table">
+                                    {{form.as_table}}
+                                </table>
+                                {% if edit %}
+                                <input hidden type="text" value="{{item.name}}" name="old_name">
+                                {% endif %}
+                                <input type="submit" class="btn btn-success float-right"> 
+                            </form>
+                        </div>
+                    </div>
+                    <!-- [ Main Content ] end -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

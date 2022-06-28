@@ -45,19 +45,20 @@
                                         <tbody>
                                             {% for i in players %}
                                             <tr>
-                                                <td style="width: 8%">
+                                                <td style="width:8%">
                                                     <a class="text-dark" href="{% url 'player_view' i.cosy %}"><i class="fa fa-fw fa-solid fa-arrow-up-right-from-square px-2"></i></a>
                                                     <a class="text-dark" href="{% url 'player_edit' i.cosy %}"><i class="fa fa-fw fa-solid fa-pen-to-square px-2"></i></a>
                                                     <a class="text-dark" href="{% url 'player_delete' i.cosy %}"><i class="fa fa-fw fa-solid fa-trash px-2"></i></a>
                                                 </td>
-                                                <td style="width: 25%">{{i.last_name}}</td>
-                                                <td style="width: 25%">{{i.first_name}}</td>
-                                                <td style="width: 20%">{{i.cosy}}</td>
-                                                <td style="width: 22%">
+                                                <td>{{i.last_name}}</td>
+                                                <td>{{i.first_name}}</td>
+                                                <td>{{i.cosy}}</td>
+                                                <td>
                                                 {% for j in i.decks.all %}
                                                     {% if forloop.counter > 1 %}
                                                     <span>/</span>
-                                                    {% endif%}<span>{{j}}</span>
+                                                    {% endif %}
+                                                    <span>{{j}}</span>
                                                 {% endfor %}
                                                 </td>
                                             </tr>
@@ -80,9 +81,27 @@
 {% block javascripts %}
 <script>
     $(document).ready( function () {
-    $('#table_id{{forloop.counter}}').DataTable({
-        "order": [[1, 'asc']]
-    });
-} );
+        $('#table_id').DataTable({
+            "paginate": true,
+            "searching": true,
+            "order": [[0, 'asc']],
+            "lengthMenu": [ [20, -1], [20, "Tout"] ],
+            "pageLength": -1,
+            "language": {
+                "lengthMenu": "Nombre d'enregistrements par page _MENU_",
+                "zeroRecords": "Aucun joueur",
+                "info": "Page n° _PAGE_ sur _PAGES_",
+                "infoEmpty": "Pas d'enregistrements disponible",
+                "infoFiltered": "(filtrer sur _MAX_ enregistrements)",
+                "paginate": {
+                    "first":      "Premier",
+                    "last":       "Dernier",
+                    "next":       "Suivant",
+                    "previous":   "Précédant"
+                },
+                "search": "Recherche :",
+            }
+        });
+        } );
 </script>
 {% endblock javascripts %}
