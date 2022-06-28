@@ -14,15 +14,15 @@ from django.forms import ModelForm
 def index(request):
     template = loader.get_template('player/index.html')
     players = Player.objects.all()
-    context = { 
-        'segment': 'player_index',
-        'players': players,
-    }
+    context = {}
+    context['segment'] = 'player_index'
+    context['players'] = players
     return HttpResponse(template.render(context, request))
 
 def add(request):
     template = loader.get_template('player/form.html')
     context = {}
+    context['segment'] = 'player_add'
     form = PlayerForm()
     context['form'] = form
     if request.method == 'POST':
@@ -46,8 +46,6 @@ def view(request, cosy):
         template = loader.get_template('player/home.html')
         context = {}
         context['player'] = player
-        
-        
         return HttpResponse(template.render(context, request))
     
 def edit(request, cosy):

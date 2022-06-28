@@ -21,26 +21,114 @@
                     </li>
 
                     <!-- PLAYER -->
-                    <li data-username="player"
-                        class="nav-item pcoded-hasmenu {% if 'ygo' in segment %} active pcoded-trigger {% endif %}">
-                        <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Player</span><span class="pcoded-badge label label-danger">NEW</span></a>
+                    <li data-username="player index"
+                        class="nav-item pcoded-hasmenu {% if 'player' in segment %} active pcoded-trigger {% endif %}">
+                        <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Player</span><!--<span class="pcoded-badge label label-danger">NEW</span>--></a>
                         <ul class="pcoded-submenu">
                             <li class="nav-item {% if 'player_index' in segment %} active {% endif %}">
                                 <a href="{% url 'player_index' %}" class="nav-link ">
                                     <i class="feather icon-home"></i><span class="pcoded-mtext"> Index</span>
                                 </a>
                             </li>
-                            <li class="nav-item {% if 'ygo_deck' in segment %} active {% endif %}">
-                                <a href="" class="nav-link ">
-                                    <i class="feather icon-package"></i><span class="pcoded-mtext"> Decks</span>
+                            <li class="nav-item {% if 'player_add' in segment %} active {% endif %}">
+                                <a href="{% url 'player_add' %}" class="nav-link ">
+                                    <i class="feather icon-user-plus"></i><span class="pcoded-mtext"> Add</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- PAGES -->
+                    <li data-username="ui charts morris maps google page 403 404 500 blank register badges breadcrumb pagination button collapse forms icons tables tabs typography"
+                        class="nav-item pcoded-hasmenu">
+                        <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">PAGES</span><span class="pcoded-badge label label-success">NEW</span></a>
+                        <ul class="pcoded-submenu">
+                            <li class="nav-item {% if 'charts-morris' in segment %} active {% endif %}">
+                                <a href="charts-morris.html" class="nav-link ">
+                                    <i class="feather icon-home"></i><span class="pcoded-mtext"> Charts Morris</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {% if 'maps-google' in segment %} active {% endif %}">
+                                <a href="maps-google.html" class="nav-link ">
+                                    <i class="feather icon-map"></i><span class="pcoded-mtext"> Maps google</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {% if '403' in segment %} active {% endif %}">
+                                <a href="page-403.html" class="nav-link ">
+                                    <i class="feather icon-alert-octagon"></i><span class="pcoded-mtext"> Page 403</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {% if '404' in segment %} active {% endif %}">
+                                <a href="page-404.html" class="nav-link ">
+                                    <i class="feather icon-alert-circle"></i><span class="pcoded-mtext"> Page 404</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {% if '500' in segment %} active {% endif %}">
+                                <a href="page-500.html" class="nav-link ">
+                                    <i class="feather icon-alert-triangle"></i><span class="pcoded-mtext"> Page 500</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {% if 'blank' in segment %} active {% endif %}">
+                                <a href="page-blank.html" class="nav-link ">
+                                    <i class="feather icon-file"></i><span class="pcoded-mtext"> Page Blank</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="register.html" class="nav-link ">
+                                    <i class="feather icon-file-plus"></i><span class="pcoded-mtext"> Register</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {% if 'badges' in segment %} active {% endif %}">
+                                <a href="ui-badges.html" class="nav-link ">
+                                    <i class="feather icon-grid"></i><span class="pcoded-mtext"> Badges</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {% if 'breadcrumb' in segment %} active {% endif %}">
+                                <a href="ui-breadcrumb-pagination.html" class="nav-link ">
+                                    <i class="feather icon-more-horizontal"></i><span class="pcoded-mtext"> BreadCrumb pagination</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {% if 'button' in segment %} active {% endif %}">
+                                <a href="ui-button.html" class="nav-link ">
+                                    <i class="feather icon-disc"></i><span class="pcoded-mtext"> Button</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {% if 'collapse' in segment %} active {% endif %}">
+                                <a href="ui-collapse.html" class="nav-link ">
+                                    <i class="feather icon-chevrons-left"></i><span class="pcoded-mtext"> Collapse</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {% if 'forms' in segment %} active {% endif %}">
+                                <a href="ui-forms.html" class="nav-link ">
+                                    <i class="feather icon-file-text"></i><span class="pcoded-mtext"> Forms</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {% if 'icons' in segment %} active {% endif %}">
+                                <a href="ui-icons.html" class="nav-link ">
+                                    <i class="feather icon-aperture"></i><span class="pcoded-mtext"> Icons</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {% if 'tables' in segment %} active {% endif %}">
+                                <a href="ui-tables.html" class="nav-link ">
+                                    <i class="feather icon-menu"></i><span class="pcoded-mtext"> Tables</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {% if 'tabs' in segment %} active {% endif %}">
+                                <a href="ui-tabs.html" class="nav-link ">
+                                    <i class="feather icon-layers"></i><span class="pcoded-mtext"> Tabs</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {% if 'typography' in segment %} active {% endif %}">
+                                <a href="ui-typography.html" class="nav-link ">
+                                    <i class="feather icon-edit-1"></i><span class="pcoded-mtext"> Typography</span>
                                 </a>
                             </li>
                         </ul>
                     </li>
                 </ul>
-            </div>
-            <div class="li-fixed-bottom">
                 <ul class="nav pcoded-inner-navbar">
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Account</label>
+                    </li>
                     <li data-username="Disabled Menu" class="nav-item">
                         <a href="{% url 'logout' %}" class="nav-link li-fixed-bottom">
                             <span class="pcoded-micon"><i class="feather icon-power"></i></span><span class="pcoded-mtext">Logout</span>
