@@ -9,9 +9,11 @@ from django.urls import path, include  # add this
 urlpatterns = [
     path('admin/', admin.site.urls),          # Django admin route
     path("", include("apps.authentication.urls")), # Auth routes - login / register
-    path('player/', include("player.urls")),      # Main Application
-    path('user/', include("user.urls")),      # Main Application
-    path('cash/', include("cashregister.urls")),      # Main Application
+    # Main Application
+    path('player/', include("player.urls")),     
+    path('user/', include("user.urls")),
+    path('cash/', include("cashregister.urls")),  
+    path('tournament/', include("tournament.urls")),  
 
     # ADD NEW Routes HERE
 

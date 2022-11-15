@@ -18,6 +18,11 @@
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
                         <li class="breadcrumb-item"><a href="{% url 'player_index' %}"><i class="feather icon-users"> Players</i></a></li>
+                        {% if edit %}
+                        <li class="breadcrumb-item"><a href="{% url 'player_add' %}"><i class="feather icon-edit-2"></i> Edit</a></li>
+                        {% else %}
+                        <li class="breadcrumb-item"><a href="{% url 'player_add' %}"><i class="feather icon-user-plus"></i> Add</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
@@ -32,7 +37,7 @@
                         <div class="col-12">
                         {% endif %}
                             <div class="card">
-                                <div class="card-header"><h5>Edit {{player}}</h5></div>
+                                <div class="card-header"><h5>{% if edit %} Edit {% else %} Add {% endif %} {{player}}</h5></div>
                                 <div class="card-body">
                                     <div class="row">
                                         <!-- EDIT -->
@@ -46,7 +51,11 @@
                                         {% endif %}
                                             {% csrf_token %}
                                                 <table class="table table-sm">{{form.as_table}}</table>
-                                                <input class="btn btn-success btn-lg btn-block" type="submit" value="Valider">
+                                                <div class="row">
+                                                    <div class="col text-center">
+                                                        <input class="btn btn-success btn-lg" type="submit" value="Valider">
+                                                    </div>
+                                                </div>
                                             </form>
                                         </div>
                                         {% if edit %}

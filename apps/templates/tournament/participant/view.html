@@ -1,0 +1,150 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Tournament {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">{{tournament.name}}</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'tournament_index' %}"><i class="fa-solid fa-trophy"></i> Tournament</a></li>
+                        <li class="breadcrumb-item"><a href=""> <i class="fa-solid fa-user"></i> {{participant.player.first_name}} {{participant.player.last_name}}</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- [ breadcrumb ] end -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>{{participant.player.first_name}} {{participant.player.last_name}}</h5>
+                                </div>
+                            </div>
+                                <div class="row">
+                                    <div class="col-9">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5>History</h5>
+                                            </div>
+                                            <div class="card-block">
+                                                <table id="table table-sm display compact" class="table">
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Deck</th>
+                                                        <th></th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>
+                                                            {% for i in participant.player.decks.all %}
+                                                            {{i}}
+                                                            {% endfor %}
+                                                        </td>
+                                                        <td></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5>Graph</h5>
+                                            </div>
+                                            <div class="card-block">
+                                                <div><h6 class="text-center">5-1-3</h6></div>
+                                                <div id="morris-donut-chart" style="height:200px"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ Main Content ] end -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+    $(document).ready( function () {
+        $('#table_id').DataTable({
+            "paginate": true,
+            "searching": true,
+            "order": [[0, 'asc']],
+            "lengthMenu": [ [20, -1], [20, "Tout"] ],
+            "pageLength": -1,
+            "language": {
+                "lengthMenu": "Nombre d'enregistrements par page _MENU_",
+                "zeroRecords": "Aucun joueur",
+                "info": "Page n° _PAGE_ sur _PAGES_",
+                "infoEmpty": "Pas d'enregistrements disponible",
+                "infoFiltered": "(filtrer sur _MAX_ enregistrements)",
+                "paginate": {
+                    "first":      "Premier",
+                    "last":       "Dernier",
+                    "next":       "Suivant",
+                    "previous":   "Précédant"
+                },
+                "search": "Recherche :",
+            }
+        });
+        } );
+</script>
+
+<script src="{{ ASSETS_ROOT }}/plugins/chart-morris/js/raphael.min.js"></script>
+<script src="{{ ASSETS_ROOT }}/plugins/chart-morris/js/morris.min.js"></script>
+<script>
+$(document).ready(function() {
+    setTimeout(function() {
+    // [ Donut-chart ] Start
+    var graph = Morris.Donut({
+        element: 'morris-donut-chart',
+        data: [{
+                value: 5,
+                label: 'Wins'
+            },
+            {
+                value: 1,
+                label: 'Draw'
+            },
+            {
+                value: 2,
+                label: 'Loose'
+            }
+        ],
+        colors: [
+            'green',
+            'grey',
+            'red'
+        ],
+        resize: true,
+        formatter: function(x) {
+            return "val : " + x
+        }
+    });    
+    // [ Donut-chart ] end
+        }, 700);
+});
+
+</script>
+{% endblock javascripts %}

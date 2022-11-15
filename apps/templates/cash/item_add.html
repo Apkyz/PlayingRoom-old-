@@ -26,11 +26,19 @@
                 <div class="page-wrapper">
                     <!-- [ Main Content ] start -->
                     <div class="card">
+                        {% if typeform == 'add' %}
                         <div class="card-header">
                             <h5>Add Item</h5>
                         </div>
                         <div class="card-body">
                             <form method="post" action="{% url 'cashregister_add_item' %}">
+                        {% else %}
+                        <div class="card-header">
+                            <h5>Edit Item</h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" action="{% url 'cashregister_edit_item' item.pk %}">
+                        {% endif %}
                                 {% csrf_token %}
                                 <table class="table">
                                     {{form.as_table}}

@@ -1,10 +1,14 @@
-from .models import Item, Player
+from datetime import datetime
+
 from django import forms
 from django.forms.widgets import DateInput, TextInput
 from django.views.generic.edit import FormView
-from datetime import datetime
+
+from .models import Item, Player
+
 
 class ItemForm(forms.Form):
+    """Form for an item"""
     name = forms.CharField(
         label='Name',
         required=True,
@@ -19,6 +23,7 @@ class ItemForm(forms.Form):
         )
     descr = forms.CharField(
         label='Description',
+        required=False,
         widget= forms.Textarea(
             attrs={'class':'form-control', 'rows':4})
         )

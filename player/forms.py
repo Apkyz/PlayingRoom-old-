@@ -20,7 +20,7 @@ class PlayerForm(forms.Form):
         )
     cosy = forms.CharField(
         label='Cosy :',
-        min_length=10,
+        min_length=0,
         max_length=10,
         required=True,
         widget= forms.TextInput(

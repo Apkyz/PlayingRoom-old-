@@ -7,13 +7,12 @@ from django.shortcuts import redirect
 
 from .models import Deck, Player, Tournament
 from .forms import PlayerForm
-from django.forms import ModelForm
 # Create your views here.
 
 @login_required(login_url="/login/")
 def index(request):
     template = loader.get_template('player/index.html')
-    players = Player.objects.all()
+    players = list(Player.objects.all())
     context = {}
     context['segment'] = 'player_index'
     context['players'] = players
@@ -31,6 +30,7 @@ def add(request):
         player.last_name = request.POST.get("last_name")
         player.cosy = request.POST.get("cosy")
         player.save()
+        # Créer un pop up
         return redirect(index, permanent=True)
     return HttpResponse(template.render(context, request))
 
@@ -67,8 +67,8 @@ def edit(request, cosy):
             context['player'] = player
             context['form'] = form
             context['edit'] = True
-            return HttpResponse(template.render(context, request))
-        
+        return HttpResponse(template.render(context, request))
+
 def deck_add(request, cosy):
     player = get_object_or_404(Player, cosy = cosy)
     deck = Deck(name= request.POST.get("name"))
@@ -83,5 +83,14 @@ def deck_remove(request, cosy, id):
     return redirect(edit, cosy, permanent=True)
 
 def match_add(request):
-    
+    if request.method == 'POST':
+        match = Match(
+            player1 = request.POST.get["player1"],
+            deck1 = request.POST.get["deck1"],
+            player2 = request.POST.get["player2"],
+            deck2 = request.POST.get["deck2"],
+            winner = request.POST.get["winner"]
+        )
+    else:
+        print("else")
     return redirect(index, permanent=True)

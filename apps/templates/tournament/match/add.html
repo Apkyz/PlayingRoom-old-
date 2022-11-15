@@ -1,0 +1,79 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Tournament {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">{{tournament.name}}</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'tournament_index' %}"><i class="fa-solid fa-trophy"></i> Tournament</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- [ breadcrumb ] end -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Tournament </h5><span class="float-right"><a href="{% url 'player_add'%}" class="btn btn-success">Add player</a>
+                                </div>
+                                <div class="card-body">
+                                    <form method="POST" action="{% url 'tournament_matchs_add' tournament.pk %}">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                            {{form}}
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ Main Content ] end -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+
+    var player1 = document.getElementById("id_player1");
+    player1.onchange = function() {
+        console.log("ONCHANGE");
+        var p1 = player1.value;
+
+        document.querySelectorAll('#id_decks1 option').forEach(option => option.remove())
+        var x = document.getElementById("id_decks1");
+        var option = document.createElement("option");
+        
+        var e = document.getElementById("id_player1");
+        console.log("{{player1.player.getDecks}}");
+        {% for decks in e %}
+            var i = {{decks}};
+            console.log(i);
+            var value = e.value;
+            var text = e.options[e.selectedIndex].text;
+            option.text = {{decks.name}};
+            x.add(option);
+        {% endfor %}
+    };
+
+</script>
+{% endblock javascripts %}

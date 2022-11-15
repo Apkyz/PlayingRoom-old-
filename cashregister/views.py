@@ -13,36 +13,50 @@ from .models import Item, Bill
 def index(request):
     template = loader.get_template('cash/index.html')
     context = {}
-    
     items = Item.objects.all()
     context['items'] = items
     context['segment'] = 'cashregister_index'
     return HttpResponse(template.render(context, request))
 
+def edit_item(request, id):
+    template = loader.get_template('cash/item_add.html')
+    context = {}
+    context['typeform'] = 'edit'
+    if request.method == 'POST':
+        Item.objects.filter(id = id).update(
+            name  = request.POST.get("name"),
+            price = request.POST.get("price"),
+            descr = request.POST.get("descr"),
+            stock = request.POST.get("stock"))
+        return redirect(index)
+    else:
+        try:
+            item = get_object_or_404(Item, pk=id)
+            form = ItemForm(item = item)
+            context['form'] = form
+            context['item'] = item
+        except:
+            raise Exception
+    return HttpResponse(template.render(context, request))
+
 def add_item(request):
     template = loader.get_template('cash/item_add.html')
     context = {}
+    context['typeform'] = 'add'
     if request.method == 'POST':
         item = Item(
-            name=request.POST.get("name"),
-            price=request.POST.get("price"),
+            name  = request.POST.get("name"),
+            price = request.POST.get("price"),
             descr = request.POST.get("descr"),
             stock = request.POST.get("stock"))
-        print(item)
         item.save()
         return redirect(index, permanent=True)
     else:
         form = ItemForm()
-    context['form'] = form
+        context['form'] = form
     return HttpResponse(template.render(context, request))
 
 def delete_item(request, id):
-    print(id)
     item = get_object_or_404(Item, pk=id)
-    
     item.delete()
-    return redirect(index, permanent=True)
-
-
-def view_item(request, id):
     return redirect(index, permanent=True)

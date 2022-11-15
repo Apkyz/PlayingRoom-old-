@@ -1,0 +1,130 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Tournament {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">{{tournament.name}}</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'tournament_index' %}"><i class="fa-solid fa-trophy"></i> Tournament</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- [ breadcrumb ] end -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Tournament </h5><span class="float-right"><a href="{% url 'player_add'%}" class="btn btn-success">Add player</a>
+                                </div>
+                                <div class="card-body">
+                                    <form method="POST" action="{% url 'tournament_participant_add' tournament.pk %}">
+                                        {% csrf_token %}
+                                        <input type="submit" value="Add" class="btn btn-success float-right">
+                                        <table class="table display compact nowrap" id="table_id">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width:10%">
+                                                        <input type="checkbox" onchange=checkall(this.id); id="all">
+                                                    </th>
+                                                    <th style="width:30%">First name</th>
+                                                    <th style="width:30%">Last name</th>
+                                                    <th style="width:30%">Cosy name</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for player in players %}
+                                                <tr id="tr_{{forloop.counter}}">
+                                                    <td>
+                                                        <input type="checkbox" name="player{{forloop.counter}}" value="{{player.pk}}" onchange=test(this.id); id="{{forloop.counter}}">
+                                                    </td>
+                                                    <td>{{player.first_name}}</td>
+                                                    <td>{{player.last_name}}</td>
+                                                    <td>{{player.cosy}}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ Main Content ] end -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+    function checkall(id) {
+        var input = document.getElementById(id);
+        if (input.checked == true) {
+            {% for i in players %}
+            document.getElementById({{forloop.counter}}).checked = true;
+            test({{forloop.counter}});
+            {% endfor %}
+        } else {
+            {% for i in players %}
+            document.getElementById({{forloop.counter}}).checked = false;
+            test({{forloop.counter}});
+            {% endfor %}
+        }
+    }
+    function test(id) {
+        var input = document.getElementById(id);
+        var name = 'tr_' + id;
+        var qte = document.getElementById(id);
+        var tr = document.getElementById(name);
+        if( input.checked == 1) {
+            tr.classList.add("table-success");
+            qte.setAttribute('name', id);
+        } else {
+            tr.classList.remove("table-success");
+            qte.setAttribute('name', '');
+        }
+    }
+
+    $(document).ready( function () {
+        $('#table_id').DataTable({
+            "paginate": true,
+            "searching": true,
+            "order": [[0, 'asc']],
+            "lengthMenu": [ [20, -1], [20, "Tout"] ],
+            "pageLength": -1,
+            "language": {
+                "lengthMenu": "Nombre d'enregistrements par page _MENU_",
+                "zeroRecords": "Aucun joueur",
+                "info": "Page n° _PAGE_ sur _PAGES_",
+                "infoEmpty": "Pas d'enregistrements disponible",
+                "infoFiltered": "(filtrer sur _MAX_ enregistrements)",
+                "paginate": {
+                    "first":      "Premier",
+                    "last":       "Dernier",
+                    "next":       "Suivant",
+                    "previous":   "Précédant"
+                },
+                "search": "Recherche :",
+            }
+        });
+        } );
+</script>
+{% endblock javascripts %}

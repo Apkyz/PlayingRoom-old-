@@ -1,0 +1,100 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} View {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">View</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'tournament_index' %}"><i class="fa-solid fa-trophy"></i> Tournament</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'tournament_index' %}"><i class="fa-solid fa-trophy"></i> {{tournament.name}}</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- [ breadcrumb ] end -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>{{tournament.name}}</h5>
+                            <span class="float-right">
+                                <a href="{% url 'tournament_participant_add' tournament.pk %}" class="btn btn-success">Add participant</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <table id="table_id" class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Action</th>
+                                                <th>First name</th>
+                                                <th>Last name</th>
+                                                <th>Decks</th>
+                                                <th>Other</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for participant in tournament.participants.all %}
+                                                <tr>
+                                                    <td>
+                                                        <a href="{% url 'tournament_participant_update' tournament.pk participant.pk %}">{{participant.payed}}</a>
+                                                        <a class="text-dark" href="{% url 'tournament_participant_view' tournament.pk participant.pk %}"><i class="fa fa-fw fa-solid fa-arrow-up-right-from-square px-2"></i></a>
+                                                        <a class="text-dark" href=""><i class="fa fa-fw fa-solid fa-pen-to-square px-2"></i></a>
+                                                        <a class="text-dark" href=""><i class="fa fa-fw fa-solid fa-trash px-2"></i></a>
+                                                        <a>
+                                                            <select class="form-control form-control-sm" onchange="document.location.href = '/tournament/1/add/matches/' + this.value">
+                                                            <option></option>
+                                                            {% for p in tournament.participants.all %}
+                                                                {% if p != participant %}
+                                                                <option value="{{participant.pk}}/{{p.pk}}/">{{p.player.first_name}} {{p.player.last_name}}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                            </select>
+                                                        </a>
+                                                    </td>
+                                                    <td>{{participant.player.first_name}}</td>
+                                                    <td>{{participant.player.last_name}}</td>
+                                                    <td>
+                                                        {% for deck in participant.player.decks.all %}
+                                                            <span>{{deck}}</span>
+                                                        {% endfor %}
+                                                    </td>
+                                                    <td>{{participant.pk}} || {{tournament.pk}}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ Main Content ] end -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+    $(document).ready( function () {
+    $('#table_id').DataTable({
+        "order": [[1, 'asc']]
+    });
+} );
+</script>
+{% endblock javascripts %}

@@ -6,7 +6,7 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
-
+    
     <div class="pcoded-content">
         <div class="pcoded-inner-content">
             <!-- [ breadcrumb ] start -->
@@ -17,7 +17,7 @@
                     </div>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="{% url 'user_index' %}"><i class="feather icon-users"></i> Players</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'player_index' %}"><i class="feather icon-users"></i> Players</a></li>
                     </ul>
                 </div>
             </div>
@@ -32,14 +32,15 @@
                                     <h5>Player </h5><span class="float-right"><a href="{% url 'player_add'%}" class="btn btn-success">Add</a></span>
                                 </div>
                                 <div class="card-body">
-                                    <table class="table table-hover display compact" id="table_id">
+                                    <table class="table table-hover" id="table_id">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
                                                 <th>Nom</th>
                                                 <th>Prenom</th>
-                                                <th>Cosy</th>
-                                                <th>Decks</th>
+                                                <th>Decks #1</th>
+                                                <th>Decks #2</th>
+                                                <th>Decks #3</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -52,15 +53,19 @@
                                                 </td>
                                                 <td>{{i.last_name}}</td>
                                                 <td>{{i.first_name}}</td>
-                                                <td>{{i.cosy}}</td>
-                                                <td>
                                                 {% for j in i.decks.all %}
-                                                    {% if forloop.counter > 1 %}
-                                                    <span>/</span>
-                                                    {% endif %}
-                                                    <span>{{j}}</span>
+                                                    <td style="width:20%">{{j}}</td>
                                                 {% endfor %}
-                                                </td>
+                                                {% if i.decks.all|length == 0 %}
+                                                <td style="width:20%"></td>
+                                                <td style="width:20%"></td>
+                                                <td style="width:20%"></td>
+                                                {% elif i.decks.all|length == 1 %}
+                                                <td style="width:20%"></td>
+                                                <td style="width:20%"></td>
+                                                {% elif i.decks.all|length == 2 %}
+                                                <td style="width:20%"></td>
+                                                {% endif %}
                                             </tr>
                                             {% endfor %}
                                         </tbody>
@@ -103,5 +108,9 @@
             }
         });
         } );
+
+    $(document).ready(function(){
+        $('.toast').toast('show');
+    });
 </script>
 {% endblock javascripts %}

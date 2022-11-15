@@ -46,7 +46,7 @@
                                     <tr>
                                         <td style="width:8%">
                                             <a class="text-dark" href=""><i class="fa fa-fw fa-solid fa-arrow-up-right-from-square px-2"></i></a>
-                                            <a class="text-dark" href="{% url 'cashregister_view_item' i.pk %}"><i class="fa fa-fw fa-solid fa-pen-to-square px-2"></i></a>
+                                            <a class="text-dark" href="{% url 'cashregister_edit_item' i.pk %}"><i class="fa fa-fw fa-solid fa-pen-to-square px-2"></i></a>
                                             <a class="text-dark" href="{% url 'cashregister_delete_item' i.pk %}"><i class="fa fa-fw fa-solid fa-trash px-2"></i></a>
                                         </td>
                                         <td>{{i.name}}</td>

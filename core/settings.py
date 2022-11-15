@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'player.apps.PlayerConfig',
     'user.apps.UserConfig',
     'cashregister.apps.CashregisterConfig',
+    'tournament.apps.TournamentConfig',
 ]
 
 MIDDLEWARE = [

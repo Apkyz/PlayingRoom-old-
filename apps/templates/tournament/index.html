@@ -1,0 +1,71 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Tournament {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Tournament</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'tournament_index' %}"><i class="fa-solid fa-trophy"></i> Tournament</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- [ breadcrumb ] end -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Tournament </h5><span class="float-right"><a href="{% url 'tournament_add' %}" class="btn btn-success">Add</a></span>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-hover">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Name</th>
+                                            <th>Date</th>
+                                            <th>Url</th>
+                                            <th>Participants</th>
+                                            <th>Matches</th>
+                                        </tr>
+                                        <tr>
+                                            {% for i in tournaments %}
+                                            <td><a href="{% url 'tournament_view' i.pk %}" class="text-dark"><i class="fa fa-fw fa-solid fa-arrow-up-right-from-square px-2"></i></a></td>
+                                            <td>{{i.name}}</td>
+                                            <td>{{i.date}}</td>
+                                            <td><a target="_blank" href={{i.id_challonge}}>{{i.id_challonge}}</a></td>
+                                            <td>{{i.participants_count}}</td>
+                                            <td>{{i.matches_count}}</td>
+                                            {% endfor %}
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ Main Content ] end -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+</script>
+{% endblock javascripts %}
