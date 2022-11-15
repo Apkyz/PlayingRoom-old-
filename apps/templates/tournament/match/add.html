@@ -35,7 +35,34 @@
                                     <form method="POST" action="{% url 'tournament_matchs_add' tournament.pk %}">
                                         {% csrf_token %}
                                         <div class="row">
-                                            {{form}}
+                                            <div class="col">
+                                                <div class="form-group">
+                                                    {{ player1.player.first_name }} {{ player1.player.last_name }} : {{ form.decks1.label_tag }} {{ form.decks1 }}
+                                                    {% if form.decks1.help_text %}
+                                                    <p class="help">{{ form.decks1.help_text|safe }}</p>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="form-group">
+                                                    {{ player2.player.first_name }} {{ player2.player.last_name }} : {{ form.decks2.label_tag }} {{ form.decks2 }}
+                                                    {% if form.decks2.help_text %}
+                                                    <p class="help">{{ form.decks2.help_text|safe }}</p>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="form-group">
+                                                    <label>Est-ce qu' {{ player1.player.first_name }} {{ player1.player.last_name }} a gagné ? </label>
+                                                    {{ form.winner }}
+                                                    {% if form.winner.help_text %}
+                                                    <p class="help">{{ form.winner.help_text|safe }}</p>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="col-1">
+                                                <input class="float-right btn btn-success" type="submit" value="Submit">
+                                            </div>
                                         </div>
                                     </form>
                                 </div>
