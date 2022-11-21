@@ -32,7 +32,11 @@
                                     <h5>Tournament </h5>
                                 </div>
                                 <div class="card-body">
+                                    {% if edit %}
+                                    <form method="POST" action="{% url 'tournament_edit' tournament.pk %}">
+                                    {% else %}
                                     <form method="POST" action="{% url 'tournament_add' %}">
+                                    {% endif %}
                                         {% csrf_token %}
                                         <table class="table table-sm">{{form.as_table}}</table>
                                     <input type="submit" value="Add" class="btn btn-success">

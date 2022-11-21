@@ -18,6 +18,7 @@
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
                         <li class="breadcrumb-item"><a href="{% url 'tournament_index' %}"><i class="fa-solid fa-trophy"></i> Tournament</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'tournament_view' tournament.pk %}"><i class="fa-solid fa-trophy"></i> {{tournament.name}}</a></li>
                         <li class="breadcrumb-item"><a href=""> <i class="fa-solid fa-user"></i> {{participant.player.first_name}} {{participant.player.last_name}}</a></li>
                     </ul>
                 </div>
@@ -37,36 +38,75 @@
                                     <div class="col-9">
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>History</h5>
+                                                <h5>Winrate</h5>
                                             </div>
                                             <div class="card-block">
                                                 <table id="table table-sm display compact" class="table">
                                                     <tr>
                                                         <th>#</th>
                                                         <th>Deck</th>
-                                                        <th></th>
+                                                        <th>Win</th>
+                                                        <th>Draw</th>
+                                                        <th>Loose</th>
                                                     </tr>
+                                                    
+                                                    {% for i in winrate %}
                                                     <tr>
-                                                        <td>1</td>
-                                                        <td>
-                                                            {% for i in participant.player.decks.all %}
-                                                            {{i}}
-                                                            {% endfor %}
-                                                        </td>
-                                                        <td></td>
+                                                        <td>{{forloop.counter}}</td>
+                                                        <td>{{i.0}}</td>
+                                                        <td>{{i.1.0}}</td>
+                                                        <td>{{i.1.1}}</td>
+                                                        <td>{{i.1.2}}</td>
                                                     </tr>
+                                                    {% endfor %}
                                                 </table>
                                             </div>
                                         </div>
-
+                                        <div class="card">
+                                            <div class="card-header"><h5>History</h5></div>
+                                            <div class="card-block">
+                                                <table class="table">
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Deck utilisé</th>
+                                                        <th>Adversaire</th>
+                                                        <th>Deck</th>
+                                                        <th class="text-center">Resultat</th>
+                                                    </tr>
+                                                    {% for m in match %}
+                                                    <tr>
+                                                        <td>{{forloop.counter}}</td>
+                                                        {% if m.player1 == participant %}
+                                                        <td>{{m.deck1}}</td>
+                                                        <td>{{m.player2.player}}</td>
+                                                        <td>{{m.deck2}}</td>
+                                                        {% else %}
+                                                        <td>{{m.deck2}}</td>
+                                                        <td>{{m.player1.player}}</td>
+                                                        <td>{{m.deck1}}</td>
+                                                        {% endif %}
+                                                        {% if m.winner != None %}
+                                                            {% if m.winner == participant %}
+                                                            <td class="text-center">WIN</td>
+                                                            {% else %}
+                                                            <td class="text-center">LOOSE</td>
+                                                            {% endif %}
+                                                        {% else %}
+                                                            <td class="text-center">DRAW</td>
+                                                        {% endif %}
+                                                    </tr>
+                                                    {% endfor %}
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-3">
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>Graph</h5>
+                                                <h5>Win - draw - loose</h5>
                                             </div>
                                             <div class="card-block">
-                                                <div><h6 class="text-center">5-1-3</h6></div>
+                                                <div><h6 class="text-center">{{win}} - {{draw}} - {{loose}}</h6></div>
                                                 <div id="morris-donut-chart" style="height:200px"></div>
                                             </div>
                                         </div>
@@ -119,27 +159,34 @@ $(document).ready(function() {
     // [ Donut-chart ] Start
     var graph = Morris.Donut({
         element: 'morris-donut-chart',
-        data: [{
-                value: 5,
+        data: [
+            {% if win != 0 %}
+            {
+                value: {{win}},
                 label: 'Wins'
             },
+            {% endif %}
+            {% if draw != 0 %}
             {
-                value: 1,
+                value: {{draw}},
                 label: 'Draw'
             },
+            {% endif %}
+            {% if loose != 0 %}
             {
-                value: 2,
+                value: {{loose}},
                 label: 'Loose'
             }
+            {% endif %}
         ],
         colors: [
-            'green',
-            'grey',
-            'red'
+            {% if win != 0 %}   'green', {% endif %}
+            {% if draw != 0 %}  'grey',  {% endif %}
+            {% if loose != 0 %} 'red'    {% endif %}
         ],
         resize: true,
         formatter: function(x) {
-            return "val : " + x
+            return x
         }
     });    
     // [ Donut-chart ] end

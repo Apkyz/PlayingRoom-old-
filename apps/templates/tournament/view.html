@@ -18,7 +18,7 @@
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
                         <li class="breadcrumb-item"><a href="{% url 'tournament_index' %}"><i class="fa-solid fa-trophy"></i> Tournament</a></li>
-                        <li class="breadcrumb-item"><a href="{% url 'tournament_index' %}"><i class="fa-solid fa-trophy"></i> {{tournament.name}}</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'tournament_view' tournament.pk %}"><i class="fa-solid fa-trophy"></i> {{tournament.name}}</a></li>
                     </ul>
                 </div>
             </div>
@@ -42,27 +42,34 @@
                                                 <th>First name</th>
                                                 <th>Last name</th>
                                                 <th>Decks</th>
-                                                <th>Other</th>
+                                                <th>Payed || PK || tournament PK</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {% for participant in tournament.participants.all %}
                                                 <tr>
                                                     <td>
-                                                        <a href="{% url 'tournament_participant_update' tournament.pk participant.pk %}">{{participant.payed}}</a>
-                                                        <a class="text-dark" href="{% url 'tournament_participant_view' tournament.pk participant.pk %}"><i class="fa fa-fw fa-solid fa-arrow-up-right-from-square px-2"></i></a>
-                                                        <a class="text-dark" href=""><i class="fa fa-fw fa-solid fa-pen-to-square px-2"></i></a>
-                                                        <a class="text-dark" href=""><i class="fa fa-fw fa-solid fa-trash px-2"></i></a>
-                                                        <a>
-                                                            <select class="form-control form-control-sm" onchange="document.location.href = '/tournament/1/add/matches/' + this.value">
-                                                            <option></option>
-                                                            {% for p in tournament.participants.all %}
-                                                                {% if p != participant %}
-                                                                <option value="{{participant.pk}}/{{p.pk}}/">{{p.player.first_name}} {{p.player.last_name}}</option>
-                                                                {% endif %}
-                                                            {% endfor %}
-                                                            </select>
-                                                        </a>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <a href="{% url 'tournament_participant_update' tournament.pk participant.pk %}">{{participant.payed}}</a>
+                                                            </div>
+                                                            <div class="col">
+                                                                <a class="text-dark" href="{% url 'tournament_participant_view' tournament.pk participant.pk %}"><i class="fa fa-fw fa-solid fa-arrow-up-right-from-square px-2"></i></a>
+                                                            </div>
+                                                            <div class="col">
+                                                                <a class="text-dark" href=""><i class="fa fa-fw fa-solid fa-trash px-2"></i></a>
+                                                            </div>
+                                                            <div class="col-8">
+                                                                <select class="form-control form-control-sm" onchange="document.location.href = '/tournament/1/add/matches/' + this.value">
+                                                                    <option></option>
+                                                                    {% for p in tournament.participants.all %}
+                                                                        {% if p != participant %}
+                                                                        <option value="{{participant.pk}}/{{p.pk}}/">{{p.player.first_name}} {{p.player.last_name}}</option>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
                                                     </td>
                                                     <td>{{participant.player.first_name}}</td>
                                                     <td>{{participant.player.last_name}}</td>
@@ -71,7 +78,7 @@
                                                             <span>{{deck}}</span>
                                                         {% endfor %}
                                                     </td>
-                                                    <td>{{participant.pk}} || {{tournament.pk}}</td>
+                                                    <td>{{participant.payed}}|| {{participant.pk}} || {{tournament.pk}}</td>
                                                 </tr>
                                             {% endfor %}
                                         </tbody>
@@ -93,7 +100,10 @@
 <script>
     $(document).ready( function () {
     $('#table_id').DataTable({
-        "order": [[1, 'asc']]
+        "order": [[1, 'asc']],
+        paging: false,
+        info: false,
+        "searching": false,
     });
 } );
 </script>

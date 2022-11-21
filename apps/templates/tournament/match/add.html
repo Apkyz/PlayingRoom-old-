@@ -32,12 +32,12 @@
                                     <h5>Tournament </h5><span class="float-right"><a href="{% url 'player_add'%}" class="btn btn-success">Add player</a>
                                 </div>
                                 <div class="card-body">
-                                    <form method="POST" action="{% url 'tournament_matchs_add' tournament.pk %}">
+                                    <form method="POST" action="{% url 'tournament_matchs_add_load_deck' tournament.pk player1.pk player2.pk %}">
                                         {% csrf_token %}
                                         <div class="row">
                                             <div class="col">
                                                 <div class="form-group">
-                                                    {{ player1.player.first_name }} {{ player1.player.last_name }} : {{ form.decks1.label_tag }} {{ form.decks1 }}
+                                                    {{ player1.player.first_name }} {{ player1.player.last_name }} {{ form.decks1 }}
                                                     {% if form.decks1.help_text %}
                                                     <p class="help">{{ form.decks1.help_text|safe }}</p>
                                                     {% endif %}
@@ -45,7 +45,7 @@
                                             </div>
                                             <div class="col">
                                                 <div class="form-group">
-                                                    {{ player2.player.first_name }} {{ player2.player.last_name }} : {{ form.decks2.label_tag }} {{ form.decks2 }}
+                                                    {{ player2.player.first_name }} {{ player2.player.last_name }} {{ form.decks2 }}
                                                     {% if form.decks2.help_text %}
                                                     <p class="help">{{ form.decks2.help_text|safe }}</p>
                                                     {% endif %}
@@ -53,7 +53,7 @@
                                             </div>
                                             <div class="col">
                                                 <div class="form-group">
-                                                    <label>Est-ce qu' {{ player1.player.first_name }} {{ player1.player.last_name }} a gagné ? </label>
+                                                    <label>Est-ce que [{{ player1.player.first_name|upper }} {{ player1.player.last_name|upper }}] a gagné ? </label>
                                                     {{ form.winner }}
                                                     {% if form.winner.help_text %}
                                                     <p class="help">{{ form.winner.help_text|safe }}</p>

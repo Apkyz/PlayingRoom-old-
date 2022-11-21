@@ -73,7 +73,7 @@ class MatchForm(forms.Form):
         required=True,
         widget= forms.Select(
             attrs={'class':'form-control'}),
-        choices=[('winner', 'Winner'), ('Looser', 'Looser'), ('Draw', 'Draw')])
+        choices=[('Winner', 'Winner'), ('Looser', 'Looser'), ('Draw', 'Draw')])
     
     def __init__(self, tournament:Tournament=None, player1:Participant=None, player2:Participant=None, *args, **kwargs):
         super(MatchForm, self).__init__(*args, **kwargs)
