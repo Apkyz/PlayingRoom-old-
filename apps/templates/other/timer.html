@@ -1,0 +1,161 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Player {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+    
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Timer</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'timer' %}"><i class="feather icon-clock"></i> Timer</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- [ breadcrumb ] end -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Timer</h5>
+                        </div>
+                        <div class="card-body text-center text-dark">
+                            <div class="row">
+                                <div class="col" style="font-size:50px">
+                                    <button onClick="timer.remove()"><i class="feather icon-minus-circle"></i></button>
+                                </div>
+                                <div class="col-10">
+                                    <div class="timer-body" style="font-size:300px">
+                                        <span class="minute">00</span> : <span class="seconde">00</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="col" style="font-size:50px">
+                                    <button onClick="timer.add()"><i class="feather icon-plus-circle"></i></button>
+                                </div>
+                            </div>
+                            
+                            <div class="timer-control" style="font-size:50px">
+                                <button onClick="timer.start(10)"><i class="feather icon-play-circle"></i></button>
+                                <button onClick="timer.stop()"><i class="feather icon-pause-circle"></i></button>
+                                <button onClick="timer.reset()"><i class="feather icon-stop-circle"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ Main Content ] end -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+    function _timer(callback) {
+        var input = document.getElementById("input");
+        var time = 40*60;
+        var status = 0;
+        var played = 0;
+        var timer_id;
+
+        this.set = function() {
+            time = input.value;
+            generateTime();
+        }
+        this.start = function(interval) {
+            interval = (typeof(interval) !== 'undefined') ? interval : 1000;
+            generateTime();
+            if(status == 0) {
+                status = 1;
+                timer_id = setInterval(function() {
+                    if(time) {
+                        time--;
+                        generateTime();
+                        input.value = time;
+                        if(typeof(callback) === 'function') callback(time);
+                    }
+                }, interval);
+            }
+        }
+        this.add = function() {
+            time += 60;
+            generateTime();
+        }
+        this.remove = function() {
+            time -=60;
+            generateTime();
+        }
+
+        this.stop =  function() {
+            if(status == 1) {
+                status = 0;
+                clearInterval(timer_id);
+            }
+        }
+        this.reset =  function(sec) {
+            time = 40*60;
+            generateTime(time);
+            this.stop();
+        }
+        this.getTime = function() {
+            return time;
+        }
+        this.getMinute = function() {
+            var time = this.getTime();
+            var minute = Math.floor(time / 60) % 60;
+            return minute;
+        }
+        this.getSeconde = function() {
+            var time = this.getTime();
+            var second = time % 60;
+            return second;
+        }
+        this.addTime = function(sec) {
+            try {
+                time += sec;
+            }
+            catch(error) {
+                console.log();
+            }
+        }
+        this.getStatus = function() {
+            return status;
+        }
+        function generateTime() {
+            var second = time % 60;
+            var minute = Math.floor(time / 60) % 60;
+            second = (second < 10) ? '0'+second : second;
+            minute = (minute < 10) ? '0'+minute : minute;
+            $('div.timer-body span.seconde').html(second);
+            $('div.timer-body span.minute').html(minute);
+            
+        }
+    }
+    
+    var audio = new Audio('{{ ASSETS_ROOT }}/sound/buzzer.mp3');
+    var timer;
+    $(document).ready(function(e) {
+        timer = new _timer(
+            function(time) {
+                switch(time) {
+                    case 0: audio.play(); break;
+                    default: break;
+                }
+            }
+        );
+        timer.reset(45*60);
+    })
+</script>
+{% endblock javascripts %}

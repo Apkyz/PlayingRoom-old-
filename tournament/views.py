@@ -51,7 +51,6 @@ def edit(request, id):
         return redirect(index, permanent=True)
     return HttpResponse(template.render(context, request))
 
-
 def view(request, id):
     template = loader.get_template('tournament/view.html')
     context = {}
@@ -59,15 +58,14 @@ def view(request, id):
     context['tournament'] = tournament
     return HttpResponse(template.render(context, request))
 
-def view_participant(request, id, participant):
+def participant_view(request, id, participant):
     template = loader.get_template('tournament/participant/view.html')
     context = {}
     tournament = Tournament.objects.get(pk = id)
     participant = Participant.objects.get(pk = participant)
     decks = participant.player.getDecks()
-    # pour chaque match participer check victoire/defaite/draw
-    matchs1 = list(Match.objects.filter(player1 = participant.pk))
-    matchs2 = list(Match.objects.filter(player2 = participant.pk))
+    matchs1 = list(Match.objects.filter(tournament = tournament.pk, player1 = participant.pk))
+    matchs2 = list(Match.objects.filter(tournament = tournament.pk, player2 = participant.pk))
     match = list()
     for m in matchs1:
         match.append(m)
@@ -159,7 +157,6 @@ def participant_edit(request, id_t, id):
             raise
     return HttpResponse(template.render(context, request))
     
-
 def tournament_matchs_add(request, id, id_p1, id_p2):
     template = loader.get_template('tournament/match/add.html')
     context = {}
@@ -185,4 +182,9 @@ def tournament_matchs_add(request, id, id_p1, id_p2):
         context['player2'] = p2
         context['form'] = MatchForm(tournament, p1, p2)
         context['tournament'] = tournament
+    return HttpResponse(template.render(context, request))
+
+def timer(request):
+    template = loader.get_template('other/timer.html')
+    context = {}
     return HttpResponse(template.render(context, request))

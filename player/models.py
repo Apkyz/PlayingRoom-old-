@@ -37,8 +37,6 @@ class Tournament(models.Model):
     
     def match_count(self):
         return len(Match.objects.filter(tournament = self.pk))
-            
-            
     
 class Match(models.Model):
     player1 = models.ForeignKey(Participant, on_delete=models.CASCADE, related_name='player1')

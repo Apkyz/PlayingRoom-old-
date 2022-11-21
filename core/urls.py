@@ -14,7 +14,6 @@ urlpatterns = [
     path('user/', include("user.urls")),
     path('cash/', include("cashregister.urls")),  
     path('tournament/', include("tournament.urls")),  
-
     # ADD NEW Routes HERE
 
     # Leave `Home.Urls` as last the last line
