@@ -64,7 +64,6 @@
 {% block javascripts %}
 <script>
     function _timer(callback) {
-        var input = document.getElementById("input");
         var time = 40*60;
         var status = 0;
         var played = 0;
@@ -97,7 +96,6 @@
             time -=60;
             generateTime();
         }
-
         this.stop =  function() {
             if(status == 1) {
                 status = 0;
@@ -140,11 +138,12 @@
             minute = (minute < 10) ? '0'+minute : minute;
             $('div.timer-body span.seconde').html(second);
             $('div.timer-body span.minute').html(minute);
-            
         }
     }
     
     var audio = new Audio('{{ ASSETS_ROOT }}/sound/buzzer.mp3');
+    console.log(audio);
+    audio.play();
     var timer;
     $(document).ready(function(e) {
         timer = new _timer(
@@ -155,7 +154,7 @@
                 }
             }
         );
-        timer.reset(45*60);
+        timer.reset(40*60);
     })
 </script>
 {% endblock javascripts %}

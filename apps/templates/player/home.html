@@ -26,54 +26,79 @@
                 <div class="page-wrapper">
                     <!-- [ Main Content ] start -->
                     <div class="row">
-                        <div class="col-12">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="card">
-                                        <div class="card-header"><h5>Decks</h5></div>
-                                        <div class="card-body">
-                                            <table class="table table-sm display compact">
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Name</th>
-                                                </tr>
-                                                {% for deck in player.decks.all %}
-                                                <tr>
-                                                    <td>{{forloop.counter}}</td>
-                                                    <td>{{deck}}</td>
-                                                </tr>
-                                                {% endfor %}
-                                            </table>
-                                        </div>
-                                    </div>
+                        <div class="col-9">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Winrate</h5>
                                 </div>
-                                <div class="col">
-                                    <div class="card">
-                                        <div class="card-header"><h5>Winrate</h5></div>
-                                        <div class="card-body">
-                                            <table class="table table-hover">
-                                                <tr>
-                                                    <th>WIN</th>
-                                                    <td>5</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Draw</th>
-                                                    <td>5</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Loose</th>
-                                                    <td>5</td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
+                                <div class="card-block">
+                                    <table id="table table-sm display compact" class="table">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Deck</th>
+                                            <th>Win</th>
+                                            <th>Draw</th>
+                                            <th>Loose</th>
+                                        </tr>
+                                        
+                                        {% for i in winrate %}
+                                        <tr>
+                                            <td>{{forloop.counter}}</td>
+                                            <td>{{i.0}}</td>
+                                            <td>{{i.1.0}}</td>
+                                            <td>{{i.1.1}}</td>
+                                            <td>{{i.1.2}}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </table>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="card">
-                                        <input type="range" min="0" max="100" id="test-1" class="form-control">
-                                    </div>
+                            <div class="card">
+                                <div class="card-header"><h5>History</h5></div>
+                                <div class="card-block">
+                                    <table class="table">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Deck utilisé</th>
+                                            <th>Adversaire</th>
+                                            <th>Deck</th>
+                                            <th class="text-center">Resultat</th>
+                                        </tr>
+                                        {% for m in match %}
+                                        <tr>
+                                            <td>{{forloop.counter}}</td>
+                                            {% if m.player1 == participant %}
+                                            <td>{{m.deck1}}</td>
+                                            <td>{{m.player2.player}}</td>
+                                            <td>{{m.deck2}}</td>
+                                            {% else %}
+                                            <td>{{m.deck2}}</td>
+                                            <td>{{m.player1.player}}</td>
+                                            <td>{{m.deck1}}</td>
+                                            {% endif %}
+                                            {% if m.winner != None %}
+                                                {% if m.winner == participant %}
+                                                <td class="text-center">WIN</td>
+                                                {% else %}
+                                                <td class="text-center">LOOSE</td>
+                                                {% endif %}
+                                            {% else %}
+                                                <td class="text-center">DRAW</td>
+                                            {% endif %}
+                                        </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Win - draw - loose</h5>
+                                </div>
+                                <div class="card-block">
+                                    <div><h6 class="text-center">{{win}} - {{draw}} - {{loose}}</h6></div>
+                                    <div id="morris-donut-chart" style="height:200px"></div>
                                 </div>
                             </div>
                         </div>
@@ -94,5 +119,50 @@
         "order": [[1, 'asc']]
     });
 } );
+</script>
+
+
+<script src="{{ ASSETS_ROOT }}/plugins/chart-morris/js/raphael.min.js"></script>
+<script src="{{ ASSETS_ROOT }}/plugins/chart-morris/js/morris.min.js"></script>
+<script>
+$(document).ready(function() {
+    setTimeout(function() {
+    // [ Donut-chart ] Start
+    var graph = Morris.Donut({
+        element: 'morris-donut-chart',
+        data: [
+            {% if win != 0 %}
+            {
+                value: {{win}},
+                label: 'Wins'
+            },
+            {% endif %}
+            {% if draw != 0 %}
+            {
+                value: {{draw}},
+                label: 'Draw'
+            },
+            {% endif %}
+            {% if loose != 0 %}
+            {
+                value: {{loose}},
+                label: 'Loose'
+            }
+            {% endif %}
+        ],
+        colors: [
+            {% if win != 0 %}   'green', {% endif %}
+            {% if draw != 0 %}  'grey',  {% endif %}
+            {% if loose != 0 %} 'red'    {% endif %}
+        ],
+        resize: true,
+        formatter: function(x) {
+            return x
+        }
+    });    
+    // [ Donut-chart ] end
+        }, 700);
+});
+
 </script>
 {% endblock javascripts %}

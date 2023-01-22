@@ -5,8 +5,9 @@ from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 
-from .models import Deck, Player, Tournament
+from .models import Deck, Player, Tournament, Participant, Match
 from .forms import PlayerForm
+from django.contrib.auth.models import User
 # Create your views here.
 
 @login_required(login_url="/login/")
@@ -22,10 +23,12 @@ def add(request):
     template = loader.get_template('player/form.html')
     context = {}
     context['segment'] = 'player_add'
-    form = PlayerForm()
+    user = get_object_or_404(User, username = request.user.username)
+    form = PlayerForm(user=user)
     context['form'] = form
     if request.method == 'POST':
         player = Player()
+        player.user = get_object_or_404(User, id=request.POST.get("user"))
         player.first_name = request.POST.get("first_name")
         player.last_name = request.POST.get("last_name")
         player.cosy = request.POST.get("cosy")
@@ -46,12 +49,55 @@ def view(request, cosy):
         template = loader.get_template('player/home.html')
         context = {}
         context['player'] = player
+        
+        participant = Participant.objects.get(player = player)
+        decks = player.getDecks()
+        matchs1 = list(Match.objects.filter(player1 = participant))
+        matchs2 = list(Match.objects.filter(player2 = participant))
+        match = list()
+        for m in matchs1:
+            match.append(m)
+        for m in matchs2:
+            match.append(m)
+        
+        result = list()
+        win = 0
+        draw = 0
+        loose = 0
+        for deck in decks:
+            _win = 0
+            _draw = 0
+            _loose = 0
+            for m in match:
+                r = m.getResult(participant)
+                
+                if deck == m.deck1 or deck == m.deck2:
+                    if r == 'win':
+                        _win += 1
+                        win += 1
+                    elif r == 'loose':
+                        _loose += 1
+                        loose += 1
+                    else:
+                        _draw += 1
+                        draw += 1
+            result.append([deck, (_win, _draw, _loose)])
+        context['winrate'] = result
+        # GLOBAL 
+        context['win'] = win
+        context['loose'] = loose
+        context['draw'] = draw
+        context['match'] = match
+        #context['tournament'] = tournament
+        context['participant'] = participant
         return HttpResponse(template.render(context, request))
     
 def edit(request, cosy):
     if request.method == 'POST':
         old_cosy = request.POST.get("old_cosy")
+        user = get_object_or_404(User, pk = request.POST.get('user'))
         p = Player(
+            user = user,
             first_name = request.POST.get("first_name"),
             last_name = request.POST.get("last_name"),
             cosy = request.POST.get("cosy")
@@ -60,8 +106,9 @@ def edit(request, cosy):
         return redirect(index, permanent=True)
     else:
         player = get_object_or_404(Player, cosy = cosy)
+        user = User.objects.get(username=request.user.username)
         if player:
-            form = PlayerForm(player=player)
+            form = PlayerForm(player = player, user = user)
             template = loader.get_template('player/form.html')
             context = {}
             context['player'] = player

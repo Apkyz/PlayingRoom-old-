@@ -100,7 +100,6 @@ def participant_view(request, id, participant):
     context['win'] = win
     context['loose'] = loose
     context['draw'] = draw
-    
     context['match'] = match
     context['tournament'] = tournament
     context['participant'] = participant

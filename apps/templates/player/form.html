@@ -50,7 +50,10 @@
                                             <form method="POST" action="{% url 'player_add' %}">
                                         {% endif %}
                                             {% csrf_token %}
-                                                <table class="table table-sm">{{form.as_table}}</table>
+                                                <table class="table table-sm">
+                                                    
+                                                    {{form.as_table}}
+                                                </table>
                                                 <div class="row">
                                                     <div class="col text-center">
                                                         <input class="btn btn-success btn-lg" type="submit" value="Valider">

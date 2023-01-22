@@ -31,10 +31,16 @@
                                 <div class="card-header">
                                     <h5>User</h5>
                                 </div>
+                                {% if player %}
+                                {% else %}
+                                <div class="card-body">
+                                    <a class="btn btn-outline-primary" href="{% url 'player_add' %}">Create player</a>
+                                </div>
+                                {% endif %}
                                 <div class="card-body">
                                     <p>{{user.username}}</p>
-                                    <p>{{user.first_name}}</p>
-                                    <p>{{user.last_name}}</p>
+                                    <p>{{user.first_name}} {{player.first_name}}</p>
+                                    <p>{{user.last_name}} {{player.last_name}}</p>
                                     <p>{{user.email}}</p>
                                     <p>{{user.password}}</p>
                                     <p>{{user.groups}}</p>

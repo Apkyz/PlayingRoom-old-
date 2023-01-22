@@ -48,8 +48,12 @@
                                             <tr>
                                                 <td style="width:8%">
                                                     <a class="text-dark" href="{% url 'player_view' i.cosy %}"><i class="fa fa-fw fa-solid fa-arrow-up-right-from-square px-2"></i></a>
+                                                    {% if user.is_staff or i.user == user %}
                                                     <a class="text-dark" href="{% url 'player_edit' i.cosy %}"><i class="fa fa-fw fa-solid fa-pen-to-square px-2"></i></a>
+                                                    {% endif %}
+                                                    {% if user.is_staff %}
                                                     <a class="text-dark" href="{% url 'player_delete' i.cosy %}"><i class="fa fa-fw fa-solid fa-trash px-2"></i></a>
+                                                    {% endif %}
                                                 </td>
                                                 <td>{{i.last_name}}</td>
                                                 <td>{{i.first_name}}</td>
