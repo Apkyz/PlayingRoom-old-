@@ -36,7 +36,7 @@
                                 </div>
                                 <div class="col-10">
                                     <div class="timer-body" style="font-size:300px">
-                                        <span class="minute">00</span> : <span class="seconde">00</span>
+                                        <span class="minute">40</span> : <span class="seconde">00</span>
                                     </div>
                                 </div>
                                 
@@ -47,7 +47,6 @@
                             
                             <div class="timer-control" style="font-size:50px">
                                 <button onClick="timer.start(10)"><i class="feather icon-play-circle"></i></button>
-                                <button onClick="timer.stop()"><i class="feather icon-pause-circle"></i></button>
                                 <button onClick="timer.reset()"><i class="feather icon-stop-circle"></i></button>
                             </div>
                         </div>
@@ -64,35 +63,41 @@
 {% block javascripts %}
 <script>
     function _timer(callback) {
+<<<<<<< HEAD
         var time = 40*60;
         var status = 0;
         var played = 0;
         var timer_id;
+=======
+>>>>>>> 5999ddfac1439be83ce53acd4a63c93fdf4100f9
 
-        this.set = function() {
-            time = input.value;
-            generateTime();
-        }
-        this.start = function(interval) {
-            interval = (typeof(interval) !== 'undefined') ? interval : 1000;
-            generateTime();
-            if(status == 0) {
-                status = 1;
-                timer_id = setInterval(function() {
-                    if(time) {
-                        time--;
-                        generateTime();
-                        input.value = time;
-                        if(typeof(callback) === 'function') callback(time);
-                    }
-                }, interval);
-            }
+        var min_time = 10;
+        var time;
+        var end_of_time;
+        var interval;
+        var running = false;
+
+        this.start = function(){
+            running = true;
+            end_of_time = new Date().getTime() + (min_time * 1000)
+
+            interval = setInterval(function(){
+                var now = new Date().getTime();
+                time = end_of_time - now;
+                generateTime();
+                if(typeof(callback) === 'function') callback(time);
+            },1000)
+
         }
         this.add = function() {
-            time += 60;
-            generateTime();
+            if(!running){
+                min_time += 60;
+                time = min_time * 1000;
+                generateTime();
+            }
         }
         this.remove = function() {
+<<<<<<< HEAD
             time -=60;
             generateTime();
         }
@@ -100,61 +105,67 @@
             if(status == 1) {
                 status = 0;
                 clearInterval(timer_id);
+=======
+            if(!running){
+            min_time -=60;
+            time = min_time * 1000;
+            generateTime()
+>>>>>>> 5999ddfac1439be83ce53acd4a63c93fdf4100f9
             }
         }
         this.reset =  function(sec) {
-            time = 40*60;
-            generateTime(time);
-            this.stop();
+            running = false;
+            clearInterval(interval);
+            time = min_time * 1000;
+            generateTime();
         }
-        this.getTime = function() {
-            return time;
-        }
-        this.getMinute = function() {
-            var time = this.getTime();
-            var minute = Math.floor(time / 60) % 60;
-            return minute;
-        }
-        this.getSeconde = function() {
-            var time = this.getTime();
-            var second = time % 60;
-            return second;
-        }
-        this.addTime = function(sec) {
-            try {
-                time += sec;
-            }
-            catch(error) {
-                console.log();
-            }
-        }
-        this.getStatus = function() {
-            return status;
-        }
+
         function generateTime() {
+<<<<<<< HEAD
             var second = time % 60;
             var minute = Math.floor(time / 60) % 60;
             second = (second < 10) ? '0'+second : second;
             minute = (minute < 10) ? '0'+minute : minute;
             $('div.timer-body span.seconde').html(second);
             $('div.timer-body span.minute').html(minute);
+=======
+            if(time> 0){
+
+                var minutes = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((time % (1000 * 60)) / 1000);
+            }
+            else{
+                var minutes = Math.ceil((time % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.ceil((time % (1000 * 60)) / 1000);
+            }
+            $('div.timer-body span.seconde').html(seconds);
+            $('div.timer-body span.minute').html(minutes);
+>>>>>>> 5999ddfac1439be83ce53acd4a63c93fdf4100f9
         }
+
     }
-    
+
+
     var audio = new Audio('{{ ASSETS_ROOT }}/sound/buzzer.mp3');
     console.log(audio);
     audio.play();
     var timer;
+
     $(document).ready(function(e) {
+        var up = true;
         timer = new _timer(
             function(time) {
-                switch(time) {
-                    case 0: audio.play(); break;
-                    default: break;
+                if (time <= 0 && up){
+                    up = false;
+                    audio.play();
+                    console.log('time');
                 }
             }
         );
+<<<<<<< HEAD
         timer.reset(40*60);
+=======
+>>>>>>> 5999ddfac1439be83ce53acd4a63c93fdf4100f9
     })
 </script>
 {% endblock javascripts %}
