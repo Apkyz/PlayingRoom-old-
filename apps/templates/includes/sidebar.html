@@ -37,15 +37,15 @@
                             </li>
                         </ul>
                     </li>
-                    <!-- CASH REGISTER -->
-                    <li data-username="caisse" 
-                        class="nav-item {% if 'cash' in segment %} active {% endif %}">
-                        <a href="{% url 'cashregister_index' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-shopping-cart"></i></span><span class="pcoded-mtext">Cash Register</span></a>
-                    </li>
                     <!-- TOURNAMENT -->
                     <li data-username="tournament tournois cup championnat" 
                         class="nav-item {% if 'tournament' in segment %} active {% endif %}">
                         <a href="{% url 'tournament_index' %}" class="nav-link "><span class="pcoded-micon"><i class="fa-solid fa-trophy"></i></span><span class="pcoded-mtext">Tournament</span></a>
+                    </li>
+                    <!-- OTHER -->
+                    <li data-username="timer" 
+                        class="nav-item {% if 'timer' in segment %} active {% endif %}">
+                        <a href="{% url 'timer' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-clock"></i></span><span class="pcoded-mtext">Timer</span></a>
                     </li>
                     <!-- PAGES -->
                     <li data-username="ui charts morris maps google page 403 404 500 blank register badges breadcrumb pagination button collapse forms icons tables tabs typography"
@@ -134,10 +134,15 @@
                             </li>
                         </ul>
                     </li>
-                    <!-- OTHER -->
-                    <li data-username="timer" 
-                        class="nav-item {% if 'timer' in segment %} active {% endif %}">
-                        <a href="{% url 'timer' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-clock"></i></span><span class="pcoded-mtext">Timer</span></a>
+                </ul>
+                <ul class="nav pcoded-inner-navbar">
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Later</label>
+                    </li>
+                    <!-- CASH REGISTER -->
+                    <li data-username="caisse" 
+                        class="nav-item {% if 'cash' in segment %} active {% endif %}">
+                        <a href="{% url 'cashregister_index' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-shopping-cart"></i></span><span class="pcoded-mtext">Cash Register</span></a>
                     </li>
                 </ul>
                 <ul class="nav pcoded-inner-navbar">
