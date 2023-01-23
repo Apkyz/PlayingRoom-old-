@@ -10,6 +10,8 @@ env = environ.Env(
     DEBUG=(bool, True)
 )
 
+CHALLONGE_TOKEN=env("CHALLONGE_TOKEN",default="")
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -41,10 +43,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.home',# Enable the inner home (home)
     
-    'player.apps.PlayerConfig',
-    'user.apps.UserConfig',
-    'cashregister.apps.CashregisterConfig',
-    'tournament.apps.TournamentConfig',
+    'player',
+    'user',
+    'cashregister',
+    'tournament',
 ]
 
 MIDDLEWARE = [

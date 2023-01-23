@@ -5,7 +5,9 @@ from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 
-from .models import Deck, Player, Tournament, Participant, Match
+from tournament.models import Match, Participant
+
+from .models import Deck, Player
 from .forms import PlayerForm
 from django.contrib.auth.models import User
 # Create your views here.
