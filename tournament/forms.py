@@ -22,8 +22,8 @@ class TournamentForm(forms.Form):
     
     id_challonge = forms.URLField(
         label='Challonge :',
+        required=False,
         min_length=0,
-        required=True,
         widget= forms.TextInput(
             attrs={'class':'form-control'})
         )

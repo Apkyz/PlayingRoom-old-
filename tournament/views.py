@@ -27,8 +27,7 @@ def add(request):
     if request.method == 'POST':
         tournament = Tournament(
             name = request.POST.get("name"),
-            date = request.POST.get("date"),
-            id_challonge = request.POST.get("id_challonge")
+            date = request.POST.get("date")
         )
         tournament.save()
         tournament.create_tournament()
