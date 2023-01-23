@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+import requests
 
 from player.models import Deck, Player
 
@@ -34,6 +35,31 @@ class Tournament(models.Model):
         return len(self.participants.all())
     def match_count(self):
         return len(Match.objects.filter(tournament = self.pk))
+
+    def create_tournament(self):
+
+
+        data = {
+            "tournament" : {
+                "name" : "Playing room online tournament",
+                "tournament_type" : "swiss",
+                "open_signup" : "false",
+                "private"  : "true",
+                "game-id" : 45,
+                "game_name" : "Yu-Gi-Oh!",
+            }
+        }
+
+        response = requests.post(
+            Tournament.__challonge_api_url+".json",
+            headers=Tournament._header,
+            json=data,
+            params=Tournament.__params
+        )
+        
+        if(response.status_code == 200):
+            self.id_challonge = response.json()['tournament']["url"]
+
     
 class Match(models.Model):
     player1 = models.ForeignKey(Participant, on_delete=models.CASCADE, related_name='player1')
