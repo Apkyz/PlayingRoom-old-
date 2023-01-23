@@ -64,7 +64,7 @@
 <script>
     function _timer(callback) {
 
-        var min_time = 10;
+        var min_time = 40*60;
         var time;
         var end_of_time;
         var interval;
@@ -104,7 +104,7 @@
         }
 
         function generateTime() {
-            if(time> 0){
+            if(time > 0){
 
                 var minutes = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
                 var seconds = Math.floor((time % (1000 * 60)) / 1000);
@@ -112,8 +112,13 @@
             else{
                 var minutes = Math.ceil((time % (1000 * 60 * 60)) / (1000 * 60));
                 var seconds = Math.ceil((time % (1000 * 60)) / 1000);
+            
             }
-            $('div.timer-body span.seconde').html(seconds);
+            if( seconds <= 10 ){
+                $('div.timer-body span.seconde').html('0' + seconds);
+            } else {
+                $('div.timer-body span.seconde').html(seconds);
+            }
             $('div.timer-body span.minute').html(minutes);
         }
 
@@ -121,6 +126,8 @@
 
 
     var audio = new Audio('{{ ASSETS_ROOT }}/sound/buzzer.mp3');
+    console.log(audio);
+    audio.play();
     var timer;
 
     $(document).ready(function(e) {
