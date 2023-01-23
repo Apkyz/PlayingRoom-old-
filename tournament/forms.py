@@ -1,7 +1,9 @@
-from player.models import Player, Tournament, Match, Participant
+from player.models import Player
 from django import forms
 from django.forms.widgets import DateInput, TextInput
 from datetime import datetime
+
+from tournament.models import Participant, Tournament
     
 class TournamentForm(forms.Form):
     name = forms.CharField(

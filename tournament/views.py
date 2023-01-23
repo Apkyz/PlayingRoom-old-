@@ -5,7 +5,8 @@ from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect
 
-from player.models import Participant, Player, Tournament, Match, Deck
+from player.models import Deck, Player
+from tournament.models import Match, Participant, Tournament
 from .forms import MatchForm, TournamentForm
 # Create your views here.
 @login_required(login_url="/login/")
