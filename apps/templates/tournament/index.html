@@ -41,8 +41,8 @@
                                             <th>Participants</th>
                                             <th>Matches</th>
                                         </tr>
+                                        {% for i in tournaments %}
                                         <tr>
-                                            {% for i in tournaments %}
                                             <td>
                                                 <a href="{% url 'tournament_view' i.pk %}" class="text-dark"><i class="fa fa-fw fa-solid fa-arrow-up-right-from-square px-2"></i></a>
                                                 <a href="{% url 'tournament_edit' i.pk %}" class="text-dark"><i class="fa fa-fw fa-solid fa-pen-to-square px-2"></i></a>
@@ -52,8 +52,8 @@
                                             <td><a target="_blank" href={{i.id_challonge}}>{{i.id_challonge}}</a></td>
                                             <td>{{i.participants_count}}</td>
                                             <td>{{i.match_count}}</td>
-                                            {% endfor %}
                                         </tr>
+                                        {% endfor %}
                                     </table>
                                 </div>
                             </div>
