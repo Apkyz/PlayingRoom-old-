@@ -4,15 +4,15 @@ import requests
 
 from player.models import Deck, Player
 
-_challonge_url = "https://challonge.com/fr/"
-__challonge_api_url =f"https://appez@api.challonge.com/v1/tournaments"
+CHALLONGE_URL = "https://challonge.com/fr/"
+CHALLONGE_API_URL =f"https://appez@api.challonge.com/v1/tournaments"
 
-_header = {
+HEADER = {
         "Content-Type": "application/json",
         "User-Agent" : "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36",
     }
 
-__params = {
+PARAMS = {
         "api_key" : settings.CHALLONGE_TOKEN
     }
 
@@ -41,7 +41,7 @@ class Tournament(models.Model):
 
         data = {
             "tournament" : {
-                "name" : "Playing room online tournament",
+                "name" : self.name,
                 "tournament_type" : "swiss",
                 "open_signup" : "false",
                 "private"  : "true",
@@ -51,15 +51,20 @@ class Tournament(models.Model):
         }
 
         response = requests.post(
-            Tournament.__challonge_api_url+".json",
-            headers=Tournament._header,
+            CHALLONGE_API_URL+".json",
+            headers=HEADER,
             json=data,
-            params=Tournament.__params
+            params=PARAMS
         )
         
         if(response.status_code == 200):
             self.id_challonge = response.json()['tournament']["url"]
+            self.save()
 
+    def add_members(self):
+
+        members = self.participants.all()
+        print(members)
     
 class Match(models.Model):
     player1 = models.ForeignKey(Participant, on_delete=models.CASCADE, related_name='player1')

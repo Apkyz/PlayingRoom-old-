@@ -31,6 +31,7 @@
                             <h5>{{tournament.name}}</h5>
                             <span class="float-right">
                                 <a href="{% url 'tournament_participant_add' tournament.pk %}" class="btn btn-success">Add participant</a>
+                                <a href="{% url 'tournament_start_challonge' tournament.pk %}" class="btn btn-success">Start tournament</a>
                         </div>
                         <div class="card-body">
                             <div class="row">

@@ -31,6 +31,7 @@ def add(request):
             id_challonge = request.POST.get("id_challonge")
         )
         tournament.save()
+        tournament.create_tournament()
         return redirect(index, permanent=True)
     return HttpResponse(template.render(context, request))
 
@@ -188,3 +189,8 @@ def timer(request):
     template = loader.get_template('other/timer.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
+def start_challonge(request,id):
+    tournament = get_object_or_404(Tournament, pk=id)
+    tournament.add_members()
+
