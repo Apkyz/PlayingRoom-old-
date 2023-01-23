@@ -63,13 +63,6 @@
 {% block javascripts %}
 <script>
     function _timer(callback) {
-<<<<<<< HEAD
-        var time = 40*60;
-        var status = 0;
-        var played = 0;
-        var timer_id;
-=======
->>>>>>> 5999ddfac1439be83ce53acd4a63c93fdf4100f9
 
         var min_time = 10;
         var time;
@@ -97,20 +90,10 @@
             }
         }
         this.remove = function() {
-<<<<<<< HEAD
-            time -=60;
-            generateTime();
-        }
-        this.stop =  function() {
-            if(status == 1) {
-                status = 0;
-                clearInterval(timer_id);
-=======
             if(!running){
             min_time -=60;
             time = min_time * 1000;
             generateTime()
->>>>>>> 5999ddfac1439be83ce53acd4a63c93fdf4100f9
             }
         }
         this.reset =  function(sec) {
@@ -121,14 +104,6 @@
         }
 
         function generateTime() {
-<<<<<<< HEAD
-            var second = time % 60;
-            var minute = Math.floor(time / 60) % 60;
-            second = (second < 10) ? '0'+second : second;
-            minute = (minute < 10) ? '0'+minute : minute;
-            $('div.timer-body span.seconde').html(second);
-            $('div.timer-body span.minute').html(minute);
-=======
             if(time> 0){
 
                 var minutes = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
@@ -140,15 +115,12 @@
             }
             $('div.timer-body span.seconde').html(seconds);
             $('div.timer-body span.minute').html(minutes);
->>>>>>> 5999ddfac1439be83ce53acd4a63c93fdf4100f9
         }
 
     }
 
 
     var audio = new Audio('{{ ASSETS_ROOT }}/sound/buzzer.mp3');
-    console.log(audio);
-    audio.play();
     var timer;
 
     $(document).ready(function(e) {
@@ -162,10 +134,6 @@
                 }
             }
         );
-<<<<<<< HEAD
-        timer.reset(40*60);
-=======
->>>>>>> 5999ddfac1439be83ce53acd4a63c93fdf4100f9
     })
 </script>
 {% endblock javascripts %}
