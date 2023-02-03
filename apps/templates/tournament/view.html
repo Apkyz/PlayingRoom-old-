@@ -31,7 +31,11 @@
                             <h5>{{tournament.name}}</h5>
                             <span class="float-right">
                                 <a href="{% url 'tournament_participant_add' tournament.pk %}" class="btn btn-success">Add participant</a>
-                                <a href="{% url 'tournament_start_challonge' tournament.pk %}" class="btn btn-success">Start tournament</a>
+                                <form method="post" action="start_challonge">
+                                    {% csrf_token %}
+                                    <input type='submit'>test</input>
+                                </form>
+
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -52,7 +56,11 @@
                                                     <td>
                                                         <div class="row">
                                                             <div class="col">
-                                                                <a href="{% url 'tournament_participant_update' tournament.pk participant.pk %}">{{participant.payed}}</a>
+
+                                                                <form method="post" action="participant_update/{{participant.pk}}">
+                                                                    {% csrf_token %}
+                                                                    <input type='submit' value={{participant.payed}} ></input>
+                                                                </form>
                                                             </div>
                                                             <div class="col">
                                                                 <a class="text-dark" href="{% url 'tournament_participant_view' tournament.pk participant.pk %}"><i class="fa fa-fw fa-solid fa-arrow-up-right-from-square px-2"></i></a>
