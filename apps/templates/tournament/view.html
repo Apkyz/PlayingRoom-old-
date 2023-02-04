@@ -31,11 +31,17 @@
                             <h5>{{tournament.name}}</h5>
                             <span class="float-right">
                                 <a href="{% url 'tournament_participant_add' tournament.pk %}" class="btn btn-success">Add participant</a>
+                            </span>
+                            <span class="float-right">
+                                {% if not tournament.is_started %}
                                 <form method="post" action="start_challonge">
                                     {% csrf_token %}
                                     <input type='submit' class="btn btn-success" value="Start tournament">
                                 </form>
-
+                                {% else %}
+                                <input disabled class="btn btn-grey" value="Tournament started">
+                                {% endif %}
+                            </span>
                         </div>
                         <div class="card-body">
                             <div class="row">
