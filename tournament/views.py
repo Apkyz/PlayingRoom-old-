@@ -4,9 +4,13 @@ from django.contrib.auth.decorators import permission_required, login_required
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAdminUser, AllowAny
 
 from player.models import Deck, Player
 from tournament.models import Match, Participant, Tournament
+from tournament.serializers import ParticipantSerializer, TournamentSerializer
 from .forms import MatchForm, TournamentForm
 # Create your views here.
 @login_required(login_url="/login/")
@@ -189,7 +193,32 @@ def timer(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
-def start_challonge(request,id):
-    tournament = get_object_or_404(Tournament, pk=id)
-    tournament.add_members()
 
+class TournamentViewSet(viewsets.ModelViewSet):
+
+    serializer_class = TournamentSerializer
+    queryset = Tournament.objects.all()
+    permission_classes = [
+        IsAdminUser,
+    ]
+    @action(detail=True,methods=['post'])
+    def start_challonge(self,request,pk=None):
+        tournament = Tournament.objects.get(pk = pk)
+        tournament.add_members()
+        tournament.start_tournament()
+        return redirect(view, pk)
+
+class ParticipantViewSet(viewsets.ModelViewSet):
+
+    serializer_class = ParticipantSerializer
+    queryset = Participant.objects.all()
+    permission_classes = [
+        IsAdminUser,
+    ]
+
+    @action(detail=True,methods=['post'])
+    def set_win(self,request,pk=None):
+        winner = Participant.objects.get(pk =request.data["win"])
+        looser = Participant.objects.get(pk =request.data["loose"])
+        winner.set_win(looser)
+        return redirect(view, pk)

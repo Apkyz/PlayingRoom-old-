@@ -20,8 +20,12 @@ class Participant(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='player')
     payed = models.BooleanField()
     id_challonge = models.CharField(max_length=100)
+
     def __str__(self):
         return str(self.player) + " " + str(self.payed)
+    
+    def set_win(self,opponent):
+        pass
     
 class Tournament(models.Model):
     
@@ -30,7 +34,8 @@ class Tournament(models.Model):
     date = models.DateField(blank=True, null=True)
     participants = models.ManyToManyField(Participant)
     id_challonge = models.CharField(max_length=100,blank=True, null=True)
-    
+    is_started = models.BooleanField(default=False)
+
     def participants_count(self):
         return len(self.participants.all())
     def match_count(self):
@@ -42,8 +47,10 @@ class Tournament(models.Model):
         data = {
             "tournament" : {
                 "name" : self.name,
-                "tournament_type" : "swiss",
+                "tournament_type" : "round robin",
                 "open_signup" : "false",
+                "ranked_by" : "points scored",
+                "rr_iterations" : 2,
                 "private"  : "true",
                 "game-id" : 45,
                 "game_name" : "Yu-Gi-Oh!",
@@ -62,10 +69,43 @@ class Tournament(models.Model):
             self.save()
 
     def add_members(self):
-
+        duelists = []
         members = self.participants.all()
-        print(members)
-    
+        for member in members:
+            duelists.append({"name": f"{member.player.first_name} {member.player.last_name}"})
+
+        data = {
+            "participants" : duelists,
+        }  
+        response = requests.post(
+            CHALLONGE_API_URL+f"/{self.id_challonge}/participants/bulk_add.json",
+            headers=HEADER,
+            json=data,
+            params=PARAMS
+        )
+        if response.status_code == 200:
+            for index,duelist in enumerate(response.json()):
+                members[index].id_challonge = duelist["participant"]["id"]
+                members[index].save()
+
+    def start_tournament(self):
+        requests.post(
+            CHALLONGE_API_URL+f"/{self.id_challonge}/participants/randomize.json",
+            headers=HEADER,
+            params=PARAMS
+        )
+
+        response = requests.post(
+            CHALLONGE_API_URL+f"/{self.id_challonge}/start.json",
+            headers=HEADER,
+            params=PARAMS
+        )
+
+        if response.status_code == 200:
+            self.is_started = True
+            self.save()
+
+            
 class Match(models.Model):
     player1 = models.ForeignKey(Participant, on_delete=models.CASCADE, related_name='player1')
     deck1 = models.ForeignKey(Deck, on_delete=models.CASCADE, related_name='deck1')

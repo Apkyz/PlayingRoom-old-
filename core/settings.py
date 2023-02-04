@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.home',# Enable the inner home (home)
     
+    'rest_framework',
+
     'player',
     'user',
     'cashregister',

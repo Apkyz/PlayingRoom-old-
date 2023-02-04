@@ -31,11 +31,26 @@
                             <h5>{{tournament.name}}</h5>
                             <span class="float-right">
                                 <a href="{% url 'tournament_participant_add' tournament.pk %}" class="btn btn-success">Add participant</a>
+                            </span>
+                            <span class="float-right">
+                                {% if not tournament.is_started %}
                                 <form method="post" action="start_challonge">
                                     {% csrf_token %}
-                                    <input type='submit'>test</input>
+                                    <input type='submit' class="btn btn-success" value="Start tournament">
                                 </form>
-
+                                {% else %}
+                                <input disabled class="btn btn-grey" value="Tournament started">
+                                {% endif %}
+                            <span class="float-right">
+                               
+                                <form method="post" action="participant/set_win">
+                                    {% csrf_token %}
+                                    <input hidden value="8" name="win">
+                                    <input hidden value="9" name="loose">
+                                    <input type='submit' class="btn btn-danger" value="Dont push '-'">
+                                </form>
+                                
+                            </span>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -58,14 +73,14 @@
                                                             <div class="col">
                                                                 <form method="post" action="participant_update/{{participant.pk}}">
                                                                     {% csrf_token %}
-                                                                        <label for='submit'>
+                                                                        <label for="submit{{participant.pk}}">
                                                                             {% if participant.payed %}
                                                                             <i class="text-success fa fa-fw fa-solid fa-check-circle px-2"></i>
                                                                             {% else %}
                                                                             <i class="text-danger fa fa-fw fa-solid fa-circle px-2"></i>
                                                                             {% endif %}
                                                                         </label>
-                                                                        <input type='submit' id='submit' hidden>
+                                                                        <input type='submit' id="submit{{participant.pk}}" hidden>
                                                                     </input>
                                                                 </form>
                                                             </div>
