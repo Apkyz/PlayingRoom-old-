@@ -33,7 +33,7 @@
                                 <a href="{% url 'tournament_participant_add' tournament.pk %}" class="btn btn-success">Add participant</a>
                                 <form method="post" action="start_challonge">
                                     {% csrf_token %}
-                                    <input type='submit'>test</input>
+                                    <input type='submit' class="btn btn-success" value="Start tournament">
                                 </form>
 
                         </div>
