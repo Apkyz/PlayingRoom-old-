@@ -56,10 +56,17 @@
                                                     <td>
                                                         <div class="row">
                                                             <div class="col">
-
                                                                 <form method="post" action="participant_update/{{participant.pk}}">
                                                                     {% csrf_token %}
-                                                                    <input type='submit' value={{participant.payed}} ></input>
+                                                                        <label for='submit'>
+                                                                            {% if participant.payed %}
+                                                                            <i class="text-success fa fa-fw fa-solid fa-check-circle px-2"></i>
+                                                                            {% else %}
+                                                                            <i class="text-danger fa fa-fw fa-solid fa-circle px-2"></i>
+                                                                            {% endif %}
+                                                                        </label>
+                                                                        <input type='submit' id='submit' hidden>
+                                                                    </input>
                                                                 </form>
                                                             </div>
                                                             <div class="col">
