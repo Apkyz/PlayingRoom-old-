@@ -34,24 +34,23 @@
                                 <div class="card-body">
                                     <table class="table table-hover">
                                         <tr>
-                                            <th>#</th>
                                             <th>Name</th>
                                             <th>Date</th>
                                             <th>Url</th>
                                             <th>Participants</th>
                                             <th>Matches</th>
+                                            <th>#</th>
                                         </tr>
                                         {% for i in tournaments %}
-                                        <tr>
-                                            <td>
-                                                <a href="{% url 'tournament_view' i.pk %}" class="text-dark"><i class="fa fa-fw fa-solid fa-arrow-up-right-from-square px-2"></i></a>
-                                                <a href="{% url 'tournament_edit' i.pk %}" class="text-dark"><i class="fa fa-fw fa-solid fa-pen-to-square px-2"></i></a>
-                                            </td>
+                                        <tr onClick="window.location.href='{% url 'tournament_view' i.pk %}';">
                                             <td>{{i.name}}</td>
                                             <td>{{i.date}}</td>
                                             <td><a target="_blank" href="https://challonge.com/fr/" + {{i.id_challonge}}>https://challonge.com/fr/{{i.id_challonge}}</a></td>
                                             <td>{{i.participants_count}}</td>
                                             <td>{{i.match_count}}</td>
+                                            <td onClick="window.location.href='{% url 'tournament_edit' i.pk %}';">
+                                                <i class="fa fa-fw fa-solid fa-pen-to-square px-2"></i>
+                                            </td>
                                         </tr>
                                         {% endfor %}
                                     </table>
