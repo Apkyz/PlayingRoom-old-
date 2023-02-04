@@ -20,8 +20,12 @@ class Participant(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='player')
     payed = models.BooleanField()
     id_challonge = models.CharField(max_length=100)
+
     def __str__(self):
         return str(self.player) + " " + str(self.payed)
+    
+    def set_win(self,opponent):
+        pass
     
 class Tournament(models.Model):
     
@@ -43,8 +47,10 @@ class Tournament(models.Model):
         data = {
             "tournament" : {
                 "name" : self.name,
-                "tournament_type" : "swiss",
+                "tournament_type" : "round robin",
                 "open_signup" : "false",
+                "ranked_by" : "points scored",
+                "rr_iterations" : 2,
                 "private"  : "true",
                 "game-id" : 45,
                 "game_name" : "Yu-Gi-Oh!",
@@ -79,7 +85,6 @@ class Tournament(models.Model):
         )
         if response.status_code == 200:
             for index,duelist in enumerate(response.json()):
-                print(members[index])
                 members[index].id_challonge = duelist["participant"]["id"]
                 members[index].save()
 

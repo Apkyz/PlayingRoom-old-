@@ -41,6 +41,15 @@
                                 {% else %}
                                 <input disabled class="btn btn-grey" value="Tournament started">
                                 {% endif %}
+                            <span class="float-right">
+                               
+                                <form method="post" action="participant/set_win">
+                                    {% csrf_token %}
+                                    <input hidden value="8" name="win">
+                                    <input hidden value="9" name="loose">
+                                    <input type='submit' class="btn btn-danger" value="Dont push '-'">
+                                </form>
+                                
                             </span>
                         </div>
                         <div class="card-body">

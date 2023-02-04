@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAdminUser, AllowAny
 
 from player.models import Deck, Player
 from tournament.models import Match, Participant, Tournament
-from tournament.serializers import TournamentSerializer
+from tournament.serializers import ParticipantSerializer, TournamentSerializer
 from .forms import MatchForm, TournamentForm
 # Create your views here.
 @login_required(login_url="/login/")
@@ -201,10 +201,24 @@ class TournamentViewSet(viewsets.ModelViewSet):
     permission_classes = [
         IsAdminUser,
     ]
-    @action(detail=True)
+    @action(detail=True,methods=['post'])
     def start_challonge(self,request,pk=None):
-        print(pk)
         tournament = Tournament.objects.get(pk = pk)
         tournament.add_members()
         tournament.start_tournament()
+        return redirect(view, pk)
+
+class ParticipantViewSet(viewsets.ModelViewSet):
+
+    serializer_class = ParticipantSerializer
+    queryset = Participant.objects.all()
+    permission_classes = [
+        IsAdminUser,
+    ]
+
+    @action(detail=True,methods=['post'])
+    def set_win(self,request,pk=None):
+        winner = Participant.objects.get(pk =request.data["win"])
+        looser = Participant.objects.get(pk =request.data["loose"])
+        winner.set_win(looser)
         return redirect(view, pk)
