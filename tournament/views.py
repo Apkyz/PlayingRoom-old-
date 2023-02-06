@@ -135,6 +135,7 @@ def participant_add(request, id):
             participant.player = player
             participant.save()
             tournament.participants.add(participant)
+        tournament.challonge_add_members()
         return redirect(view, id, permanent = True)
     return HttpResponse(template.render(context, request))
 
@@ -204,7 +205,6 @@ class TournamentViewSet(viewsets.ModelViewSet):
     @action(detail=True,methods=['post'])
     def start_challonge(self,request,pk=None):
         tournament = Tournament.objects.get(pk = pk)
-        tournament.add_members()
         tournament.start_tournament()
         return redirect(view, pk)
 

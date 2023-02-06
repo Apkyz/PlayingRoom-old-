@@ -68,9 +68,9 @@ class Tournament(models.Model):
             self.id_challonge = response.json()['tournament']["url"]
             self.save()
 
-    def add_members(self):
+    def challonge_add_members(self):
         duelists = []
-        members = self.participants.all()
+        members = self.participants.filter(id_challonge = '')
         for member in members:
             duelists.append({"name": f"{member.player.first_name} {member.player.last_name}"})
 
