@@ -18,7 +18,8 @@ urlpatterns = [
     path('<slug:id_t>/participant_update/<int:id>', views.participant_update, name='tournament_participant_update'),
 
     path('<int:pk>/start_challonge',view=views.TournamentViewSet.as_view({'post': 'start_challonge'}),name='start_challonge'),
-    path('<int:pk>/participant/set_win',view=views.ParticipantViewSet.as_view({'post': 'set_win'}),name='set_win'),
+    path('<int:pk>/participant/set_win',view=views.TournamentViewSet.as_view({'post': 'set_win'}),name='set_win'),
+    path('<int:pk>/get_opponents',view=views.ParticipantViewSet.as_view({'get': 'get_opponents'}),name='get_opponents'),
     path('<slug:id>/<slug:participant>/', view=views.participant_view, name='tournament_participant_view'),
     path('<slug:id>/', views.view, name='tournament_view'),
 

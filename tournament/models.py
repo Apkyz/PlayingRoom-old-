@@ -19,13 +19,54 @@ PARAMS = {
 class Participant(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='player')
     payed = models.BooleanField()
-    id_challonge = models.CharField(max_length=100)
+    id_challonge = models.CharField(max_length=100,unique=True)
 
     def __str__(self):
         return str(self.player) + " " + str(self.payed)
-    
+
+    def get_opponents(self):
+
+        opponents = []
+
+        tournament = Tournament.objects.get(participants__pk = self.pk)
+
+        params = PARAMS
+        params['state'] = 'open'
+        params['participant_id'] = self.id_challonge
+
+        response = requests.get(
+            CHALLONGE_API_URL+f"/{tournament.id_challonge}/matches.json",
+            headers=HEADER,
+            params=params
+        )
+
+
+        
+        if response.status_code == 200:
+            matches = response.json()
+
+            for match in matches:
+                match_data = match['match']
+
+                if tournament.first_part:
+                    if tournament.participants_count() % 2 == 0:
+                        nb_round = (tournament.participants_count()-1)
+                    else :
+                         nb_round = tournament.participants_count()
+                    if match_data['round'] > nb_round:
+                        continue
+                if str(match_data['player1_id']) ==self.id_challonge:
+                    id_opp =  match_data['player2_id']
+                else :
+                    id_opp =  match_data['player1_id']
+                
+                opponent = Participant.objects.get(id_challonge = id_opp)
+
+                opponents.append(opponent)
+        return opponents
+
     def set_win(self,opponent):
-        pass
+        print("ok")
     
 class Tournament(models.Model):
     
@@ -35,6 +76,7 @@ class Tournament(models.Model):
     participants = models.ManyToManyField(Participant)
     id_challonge = models.CharField(max_length=100,blank=True, null=True)
     is_started = models.BooleanField(default=False)
+    first_part = models.BooleanField(default=True)
 
     def participants_count(self):
         return len(self.participants.all())

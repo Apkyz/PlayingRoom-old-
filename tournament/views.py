@@ -208,17 +208,26 @@ class TournamentViewSet(viewsets.ModelViewSet):
         tournament.start_tournament()
         return redirect(view, pk)
 
-class ParticipantViewSet(viewsets.ModelViewSet):
-
-    serializer_class = ParticipantSerializer
-    queryset = Participant.objects.all()
-    permission_classes = [
-        IsAdminUser,
-    ]
-
     @action(detail=True,methods=['post'])
     def set_win(self,request,pk=None):
         winner = Participant.objects.get(pk =request.data["win"])
         looser = Participant.objects.get(pk =request.data["loose"])
         winner.set_win(looser)
         return redirect(view, pk)
+from rest_framework.response import Response
+
+class ParticipantViewSet(viewsets.ModelViewSet):
+
+    serializer_class = ParticipantSerializer
+    queryset = Participant.objects.all()
+    permission_classes = [
+        
+    ]
+
+        
+    @action(detail=True,methods=['get'])
+    def get_opponents(self,request,pk=None):
+        participant = Participant.objects.get(pk=pk)
+        opponents = participant.get_opponents()
+        return Response(ParticipantSerializer( opponents,many=True).data)
+        
