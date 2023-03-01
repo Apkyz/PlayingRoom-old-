@@ -13,6 +13,8 @@ COPY . .
 
 # running migrations
 RUN python manage.py migrate
+#running fixtures
+RUN python manage.py loaddata decks
 
 # gunicorn
 CMD ["gunicorn", "--config", "gunicorn-cfg.py", "core.wsgi"]

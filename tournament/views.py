@@ -135,6 +135,7 @@ def participant_add(request, id):
             participant.player = player
             participant.save()
             tournament.participants.add(participant)
+        tournament.challonge_add_members()
         return redirect(view, id, permanent = True)
     return HttpResponse(template.render(context, request))
 
@@ -206,17 +207,8 @@ class TournamentViewSet(viewsets.ModelViewSet):
     @action(detail=True,methods=['post'])
     def start_challonge(self,request,pk=None):
         tournament = Tournament.objects.get(pk = pk)
-        tournament.add_members()
         tournament.start_tournament()
         return redirect(view, pk)
-
-class ParticipantViewSet(viewsets.ModelViewSet):
-
-    serializer_class = ParticipantSerializer
-    queryset = Participant.objects.all()
-    permission_classes = [
-        IsAdminUser,
-    ]
 
     @action(detail=True,methods=['post'])
     def set_win(self,request,pk=None):
@@ -224,3 +216,20 @@ class ParticipantViewSet(viewsets.ModelViewSet):
         looser = Participant.objects.get(pk =request.data["loose"])
         winner.set_win(looser)
         return redirect(view, pk)
+from rest_framework.response import Response
+
+class ParticipantViewSet(viewsets.ModelViewSet):
+
+    serializer_class = ParticipantSerializer
+    queryset = Participant.objects.all()
+    permission_classes = [
+        
+    ]
+
+        
+    @action(detail=True,methods=['get'])
+    def get_opponents(self,request,pk=None):
+        participant = Participant.objects.get(pk=pk)
+        opponents = participant.get_opponents()
+        return Response(ParticipantSerializer( opponents,many=True).data)
+        
