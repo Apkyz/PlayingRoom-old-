@@ -159,5 +159,12 @@
     "fields": {
       "name": "Earth Machine"
     }
+  },
+  {
+    "model": "player.Deck",
+    "pk": 24,
+    "fields": {
+      "name": "Byssted contrôle"
+    }
   }
 ]
