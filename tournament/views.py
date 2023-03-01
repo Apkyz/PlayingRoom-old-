@@ -160,28 +160,30 @@ def participant_edit(request, id_t, id):
         else:
             raise
     return HttpResponse(template.render(context, request))
-    
-def tournament_matchs_add(request, id, id_p1, id_p2):
+
+
+def tournament_matchs_add(request, id):
     template = loader.get_template('tournament/match/add.html')
     context = {}
     tournament = get_object_or_404(Tournament, pk=id)
     if request.method == 'POST':
+        
         match = Match(
-            player1 = get_object_or_404(Participant, pk = id_p1),
+            player1 = get_object_or_404(Participant, pk = request.POST.get("id_p1")),
             deck1 = get_object_or_404(Deck, pk = request.POST.get("decks1")),
-            player2 = get_object_or_404(Participant, pk = id_p2),
+            player2 = get_object_or_404(Participant, pk = request.POST.get("id_p2")),
             deck2 = get_object_or_404(Deck, pk = request.POST.get("decks2")),
             tournament = tournament
         )
         if request.POST.get("winner") == 'Winner':
-            match.winner = get_object_or_404(Participant, pk = id_p1)
+            match.winner = get_object_or_404(Participant, pk = request.POST.get("id_p1"))
         elif request.POST.get("winner") == 'Looser':
-            match.winner = get_object_or_404(Participant, pk = id_p2)
+            match.winner = get_object_or_404(Participant, pk = request.POST.get("id_p2"))
         match.save()
         return redirect(view, id)
     else:
-        p1 = Participant.objects.get(pk = id_p1)
-        p2 = Participant.objects.get(pk = id_p2)
+        p1 = Participant.objects.get(pk = request.POST.get("id_p1"))
+        p2 = Participant.objects.get(pk = request.POST.get("id_p2"))
         context['player1'] = p1
         context['player2'] = p2
         context['form'] = MatchForm(tournament, p1, p2)

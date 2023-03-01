@@ -62,7 +62,7 @@
                                                 <th>First name</th>
                                                 <th>Last name</th>
                                                 <th>Decks</th>
-                                                <th>Payed || PK || tournament PK</th>
+                                                <th>Ajout match</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -85,20 +85,13 @@
                                                                 </form>
                                                             </div>
                                                             <div class="col">
-                                                                <a class="text-dark" href="{% url 'tournament_participant_view' tournament.pk participant.pk %}"><i class="fa fa-fw fa-solid fa-arrow-up-right-from-square px-2"></i></a>
+                                                                <a class="text-dark" href="{% url 'tournament_participant_view' tournament.pk participant.pk %}"><i class="fa fa-fw fa-solid fa-chart-simple px-2"></i></a>
                                                             </div>
                                                             <div class="col">
                                                                 <a class="text-dark" href=""><i class="fa fa-fw fa-solid fa-trash px-2"></i></a>
                                                             </div>
                                                             <div class="col-8">
-                                                                <select class="form-control form-control-sm" onchange="document.location.href = '/tournament/1/add/matches/' + this.value">
-                                                                    <option></option>
-                                                                    {% for p in tournament.participants.all %}
-                                                                        {% if p != participant %}
-                                                                        <option value="{{participant.pk}}/{{p.pk}}/">{{p.player.first_name}} {{p.player.last_name}}</option>
-                                                                        {% endif %}
-                                                                    {% endfor %}
-                                                                </select>
+
                                                             </div>
                                                         </div>
                                                     </td>
@@ -109,7 +102,25 @@
                                                             <span>{{deck}}</span>
                                                         {% endfor %}
                                                     </td>
-                                                    <td>{{participant.payed}}|| {{participant.pk}} || {{tournament.pk}}</td>
+                                                    <td>
+                                                        <form method="post" action="/tournament/1/add/matches/">
+                                                        {% csrf_token %}
+                                                            <div class="input-group mb-3">
+                                                                <input type="text" value="{{participant.pk}}" name="id_p1" hidden>
+                                                                <select class="custom-select" id="inputGroupSelect02" name="id_p2">
+                                                                    <option selected>Choisi...</option>
+                                                                    {% for p in tournament.participants.all %}
+                                                                        {% if p != participant %}
+                                                                        <option value="{{p.pk}}">{{p.player.first_name}} {{p.player.last_name}}</option>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </select>
+                                                                <div class="input-group-append">
+                                                                    <input type="submit" class="btn btn-success" for="inputGroupSelect02" value="Report match">
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </td>
                                                 </tr>
                                             {% endfor %}
                                         </tbody>
