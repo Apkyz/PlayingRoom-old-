@@ -1,0 +1,163 @@
+[
+  {
+    "model": "player.Deck",
+    "pk": 1,
+    "fields": {
+      "name": "P.U.N.K - Virtual World"
+    }
+  },
+  {
+    "model": "player.Deck",
+    "pk": 2,
+    "fields": {
+      "name": "Eldlich"
+    }
+  },
+  {
+    "model": "player.Deck",
+    "pk": 3,
+    "fields": {
+      "name": "Labrynth"
+    }
+  },
+  {
+    "model": "player.Deck",
+    "pk": 4,
+    "fields": {
+      "name": "Traptrix"
+    }
+  },
+  {
+    "model": "player.Deck",
+    "pk": 5,
+    "fields": {
+      "name": "Branded Bystial"
+    }
+  },
+  {
+    "model": "player.Deck",
+    "pk": 6,
+    "fields": {
+      "name": "Scareclaw - Kashtira - Brave Token"
+    }
+  },
+  {
+    "model": "player.Deck",
+    "pk": 7,
+    "fields": {
+      "name": "Kashtira"
+    }
+  },
+  {
+    "model": "player.Deck",
+    "pk": 8,
+    "fields": {
+      "name": "Plunder Patrol - Brave Token"
+    }
+  },
+  {
+    "model": "player.Deck",
+    "pk": 9,
+    "fields": {
+      "name": "Swordsoul"
+    }
+  },
+  {
+    "model": "player.Deck",
+    "pk": 10,
+    "fields": {
+      "name": "Ninja"
+    }
+  },
+  {
+    "model": "player.Deck",
+    "pk": 11,
+    "fields": {
+      "name": "P.U.N.K - Therion"
+    }
+  },
+  {
+    "model": "player.Deck",
+    "pk": 12,
+    "fields": {
+      "name": "Dragon Link"
+    }
+  },
+  {
+    "model": "player.Deck",
+    "pk": 13,
+    "fields": {
+      "name": "Drytron"
+    }
+  },
+  {
+    "model": "player.Deck",
+    "pk": 14,
+    "fields": {
+      "name": "Spright"
+    }
+  },
+  {
+    "model": "player.Deck",
+    "pk": 15,
+    "fields": {
+      "name": "Photon"
+    }
+  },
+  {
+    "model": "player.Deck",
+    "pk": 16,
+    "fields": {
+      "name": "P.U.N.K - Gold Pride"
+    }
+  },
+  {
+    "model": "player.Deck",
+    "pk": 17,
+    "fields": {
+      "name": "Runick"
+    }
+  },
+  {
+    "model": "player.Deck",
+    "pk": 18,
+    "fields": {
+      "name": "Phantom Knights"
+    }
+  },
+  {
+    "model": "player.Deck",
+    "pk": 19,
+    "fields": {
+      "name": "Dinosaur"
+    }
+  },
+  {
+    "model": "player.Deck",
+    "pk": 20,
+    "fields": {
+      "name": "Naturia - Runick"
+    }
+  },
+  {
+    "model": "player.Deck",
+    "pk": 21,
+    "fields": {
+      "name": "Spright - Runick - Evil★Twin"
+    }
+  },
+  {
+    "model": "player.Deck",
+    "pk": 22,
+    "fields": {
+      "name": "Marincess"
+    }
+  },
+  {
+    "model": "player.Deck",
+    "pk": 23,
+    "fields": {
+      "name": "Earth Machine"
+    }
+  }
+]
